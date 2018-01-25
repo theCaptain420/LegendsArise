@@ -1,12 +1,16 @@
 package captain.the;
 
 import com.almasb.fxgl.app.GameApplication;
-import com.almasb.fxgl.entity.Entities;
-import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.*;
+import com.almasb.fxgl.physics.CollisionHandler;
+import com.almasb.fxgl.physics.CollisionResult;
+import com.almasb.fxgl.physics.box2d.collision.Collision;
+import com.almasb.fxgl.scene.GameScene;
 import com.almasb.fxgl.settings.GameSettings;
 import com.sun.javafx.geom.Point2D;
 import javafx.scene.input.MouseButton;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import org.apache.http.entity.EntityTemplate;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.entity.Entities;
@@ -25,10 +29,18 @@ import java.util.Map;
 public class Main extends GameApplication {
     private int mapsizeX = 800;
     private int mapsizeY = 800;
+
     private Entity player;
+    private int playerlife = 50;
     private Entity ability;
+
+    private Entity enemy;
+    private int enemylife = 50;
+
+
     private double movementspeed = 0.3;
     private enum Direction {NORTH, SOUTH, WEST, EAST};
+
     private Direction currentDirection = Direction.NORTH;
 
     /*Tillader andre klasser at hente positionen på player*/
@@ -98,8 +110,12 @@ public class Main extends GameApplication {
         input.addAction(new UserAction("Ability") {
             @Override
             protected void onAction() {
+            ability = Entities.builder()
+                    .at(player.getX()+10,player.getY())
+                    .viewFromTexture("Turtle.png")
+                    .buildAndAttach(getGameWorld());
 
-
+            ability.removeFromWorld();
 
             }
         }, KeyCode.L);
@@ -115,10 +131,42 @@ public class Main extends GameApplication {
         player.setScaleX(1);//Scaleringen på X af figuren(player)
         player.setScaleY(1);//Scaleringen på Y af figuren(player)
 
+        /*En ability*/
+        Entity ability = new Entity();
+        ability.translateX(player.getX()+20);
+        ability.translateY(player.getY()+20);
+        ability.setProperty("alive",true);
+
+        float directionX = (float) player.getX();
+        float directionY = (float) player.getY();
+
+        if(currentDirection == Direction.NORTH){
+            directionX += 20;
+        }else if(currentDirection == Direction.SOUTH){
+            directionX -= 20;
+        }else if(currentDirection == Direction.WEST){
+            directionY -= 20;
+        }else if(currentDirection == Direction.EAST){
+            directionY -= 20;
+        }
+
+        Point2D vector = new Point2D(directionX,directionY);
+
+        ability.setProperty("vector",vector);
+
+        Rectangle rect = new Rectangle(10,1);
+        rect.setFill(Color.BLACK);
+        ability.setViewFromTexture("Turtle.png");
+
+
+
+
     }
 
     @Override
-    protected void initPhysics(){}
+    protected void initPhysics(){
+
+    }
 
     @Override
     protected void initUI(){
