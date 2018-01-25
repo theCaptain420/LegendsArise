@@ -26,10 +26,18 @@ public class Main extends GameApplication {
     private int mapsizeX = 800;
     private int mapsizeY = 800;
     private Entity player;
+    private Entity ability;
     private double movementspeed = 0.3;
+    private enum Direction {NORTH, SOUTH, WEST, EAST};
+    private Direction currentDirection = Direction.NORTH;
 
-
-
+    /*Tillader andre klasser at hente positionen på player*/
+    public double getPlayerPosX(){
+        return player.getX();
+    }
+    public double getPlayerPosY(){
+        return player.getY();
+    }
 
 
 
@@ -51,6 +59,7 @@ public class Main extends GameApplication {
 
             getGameState().increment("pixelsMoved",+1);
             player.setRotation(90);
+            currentDirection = Direction.EAST;
         }
 
         }, KeyCode.D);
@@ -61,6 +70,7 @@ public class Main extends GameApplication {
                 player.translateX(-movementspeed);//Går 1 pixel til venstre
                 getGameState().increment("pixelsMoved",+1);
                 player.setRotation(270);
+                currentDirection = Direction.WEST;
             }
 
         }, KeyCode.A);
@@ -71,7 +81,7 @@ public class Main extends GameApplication {
                 player.translateY(-movementspeed);//Går 1 pixel op
                 getGameState().increment("pixelsMoved",+1);
                 player.setRotation(0);
-
+                currentDirection = Direction.NORTH;
             }
         }, KeyCode.W);
 
@@ -81,8 +91,18 @@ public class Main extends GameApplication {
                 player.translateY(movementspeed);//Går 1 pixel ned
                 getGameState().increment("pixelsMoved",+1);
                 player.setRotation(180);
+                currentDirection = Direction.SOUTH;
             }
         }, KeyCode.S);
+
+        input.addAction(new UserAction("Ability") {
+            @Override
+            protected void onAction() {
+
+
+
+            }
+        }, KeyCode.L);
     }
 
 
@@ -94,6 +114,7 @@ public class Main extends GameApplication {
                 .buildAndAttach(getGameWorld());
         player.setScaleX(1);//Scaleringen på X af figuren(player)
         player.setScaleY(1);//Scaleringen på Y af figuren(player)
+
     }
 
     @Override
@@ -120,18 +141,7 @@ public class Main extends GameApplication {
     //@Override
     //protected void initAssets() throws Exception{}
 
-    protected void theMovement(int XOrY){ //1=x ,0=y
-        Input input = new Input();
-        if(XOrY == 1){
-            if(player.getX()>input.getMouseXUI()){
-                player.setX(player.getX()+1); }
-        }
-        if(XOrY == 0){
-            if(player.getY()>input.getMouseYUI()){
-                player.setY(player.getY()+1);
-            }
-        }
-    }
+
 
     @Override
     protected void initSettings(GameSettings settings) {
