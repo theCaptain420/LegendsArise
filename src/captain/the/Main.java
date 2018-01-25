@@ -26,6 +26,7 @@ public class Main extends GameApplication {
     private int mapsizeX = 800;
     private int mapsizeY = 800;
     private Entity player;
+    private double movementspeed = 0.3;
 
 
 
@@ -46,7 +47,7 @@ public class Main extends GameApplication {
         input.addAction(new UserAction("Move Right") {
         @Override
             protected void onAction(){
-            player.translateX(1);//går 1 pixel til højre ->
+            player.translateX(movementspeed);//går 1 pixel til højre ->
 
             getGameState().increment("pixelsMoved",+1);
             player.setRotation(90);
@@ -57,7 +58,7 @@ public class Main extends GameApplication {
         input.addAction(new UserAction("Move Left") {
             @Override
             protected void onAction(){
-                player.translateX(-1);//Går 1 pixel til venstre
+                player.translateX(-movementspeed);//Går 1 pixel til venstre
                 getGameState().increment("pixelsMoved",+1);
                 player.setRotation(270);
             }
@@ -67,7 +68,7 @@ public class Main extends GameApplication {
         input.addAction(new UserAction("Move Up") {
             @Override
             protected void onAction() {
-                player.translateY(-1);//Går 1 pixel op
+                player.translateY(-movementspeed);//Går 1 pixel op
                 getGameState().increment("pixelsMoved",+1);
                 player.setRotation(0);
 
@@ -77,7 +78,7 @@ public class Main extends GameApplication {
         input.addAction(new UserAction("Move Down") {
             @Override
             protected void onAction() {
-                player.translateY(1);//Går 1 pixel ned
+                player.translateY(movementspeed);//Går 1 pixel ned
                 getGameState().increment("pixelsMoved",+1);
                 player.setRotation(180);
             }
@@ -91,8 +92,8 @@ public class Main extends GameApplication {
                 .at(300,300)//player start pos
                 .viewFromTexture("Turtle.png")//Sætter figuren til at være dette billede
                 .buildAndAttach(getGameWorld());
-        player.setScaleX(5);//Scaleringen på X af figuren(player)
-        player.setScaleY(5);//Scaleringen på Y af figuren(player)
+        player.setScaleX(1);//Scaleringen på X af figuren(player)
+        player.setScaleY(1);//Scaleringen på Y af figuren(player)
     }
 
     @Override
