@@ -213,6 +213,7 @@ public class Main extends GameApplication {
                 Main.player.setViewFromTexture("pixil-layer-Background.png");
                 player.setScaleX(3);
                 player.setScaleY(3);
+                getAudioPlayer().playSound("aaeffect.mp3");
             }
 
             @Override
