@@ -3,56 +3,40 @@ package captain.the;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.input.ActionType;
 import com.almasb.fxgl.input.OnUserAction;
-import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.input.InputMapping;
-import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.physics.CollisionResult;
-import com.almasb.fxgl.physics.box2d.collision.Collision;
-import com.almasb.fxgl.scene.GameScene;
 import com.almasb.fxgl.settings.GameSettings;
-import com.sun.javafx.geom.Point2D;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
-import org.apache.http.entity.EntityTemplate;
-import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.settings.GameSettings;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
-import java.awt.*;
 import java.util.Map;
-
-import static javafx.scene.input.KeyEvent.KEY_PRESSED;
 
 public class Main extends GameApplication {
             private int mapsizeX = 800;
             private int mapsizeY = 800;
 
-            HittingAnimation hittingAnimation = new HittingAnimation();
 
             public static Entity player;
-            private int playerLife = 50;
-            private boolean playerAlive = true;
+            int playerLife = 50; //Package protected, da den skal bruges i andre klasser.
+            boolean playerAlive = true;//Package protected, da den skal bruges i andre klasser.
             private Entity ability;
-            private int playerDMG = 10;
+            int playerDMG = 10;//Package protected, da den skal bruges i andre klasser.
 
             public static Entity enemy;
-            private int enemyLife = 10;
+            int enemyposXTilSpawn = 450;
+            int enemyposYTilSpawn = 450;
+
+
+            int enemyLife = 10;//Package protected, da den skal bruges i andre klasser.
+
             private boolean enemyAlive = true;
 
 
             private double movementspeed = 0.3;
-            private enum Direction {NORTH, SOUTH, WEST, EAST};
-
-            private Direction currentDirection = Direction.NORTH;
+            captain.the.Direction currentDirection = captain.the.Direction.NORTH;//Package protected, da den skal bruges i andre klasser.
 
             /*Tillader andre klasser at hente positionen på player*/
             public double getPlayerPosX(){
@@ -62,8 +46,15 @@ public class Main extends GameApplication {
                 return player.getY();
             }
 
+            public int getEnemyLife() {
+                return enemyLife;
+            }
 
-            /*Input fra bruger samt control af figuren */
+            public void setEnemyLife(int enemyLife) {
+                this.enemyLife = enemyLife;
+            }
+
+    /*Input fra bruger samt control af figuren */
             @Override
             protected void initInput() {
                 Input input = getInput(); //laver et input objekt
@@ -124,23 +115,25 @@ public class Main extends GameApplication {
             }
 
 
-
-
             @Override
             protected void initGame() {
                 player = Entities.builder()
                         .at(300,300)//player start pos
-                        .viewFromTexture("Turtle.png")//Sætter figuren til at være dette billede
+                        .viewFromTexture("pixil-layer-Background.png")//Sætter figuren til at være dette billede
                         .buildAndAttach(getGameWorld());
-                player.setScaleX(1);//Scaleringen på X af figuren(player)
-                player.setScaleY(1);//Scaleringen på Y af figuren(player)
+                player.setScaleX(3);//Scaleringen på X af figuren(player)
+                player.setScaleY(3);//Scaleringen på Y af figuren(player)
 
 
                 enemy = Entities.builder()
                         .at(500,500)
                         .viewFromTexture("Turtle.png")
                         .buildAndAttach(getGameWorld());
+                int enemyposXTilSpawn = 450;
+                int enemyposYTilSpawn = 450;
 
+
+                getGameWorld().spawn("enemy",enemyposXTilSpawn,enemyposYTilSpawn);
 
             }
 
@@ -192,18 +185,62 @@ public class Main extends GameApplication {
 
             }*/
 
-            /*Hitting animation!*/
+            /*Hitting "animation" samt skade til enemy. */
             @OnUserAction(name = "Hit", type = ActionType.ON_ACTION_BEGIN)
             public void hitBegin() {
                 Main.player.setViewFromTexture("pixil-layer-Background(1).png");
                 player.setScaleX(3);
                 player.setScaleY(3);
 
-                /*Spørg om enemy bliver ramt, hvis ja, mister han liv..*/
-                if((player.getY() + 100) < enemy.getY() || enemy.getY() < player.getY()){
-                    enemyLife -= playerDMG;
-                    System.out.println("enemy hit. " + enemyLife);
+                /*Når man står oppe over enemy og kigger ned */
+                if(currentDirection.equals(Direction.SOUTH)) {
+                    if ((player.getY()) < enemy.getY()
+                            && enemy.getY() < (player.getY() + 32)
+                            && (player.getX() - 10) < enemy.getX()
+                            && enemy.getX() < (player.getX() + 10)) {
+                        System.out.println("enemy hit. From North." +enemyLife);
+                        enemyLife-=playerDMG;
+
+
+                    }
                 }
+                /*Når man står neden under enemy og kigger op*/
+                if(currentDirection.equals(Direction.NORTH)) {
+                    if ((player.getY()) > enemy.getY()
+                            && enemy.getY() < (player.getY() + 32)
+                            && (player.getX() - 10) < enemy.getX()
+                            && enemy.getX() < (player.getX() + 10)) {
+                        System.out.println("enemy hit. From South." + enemyLife);
+                        enemyLife -= playerDMG;
+
+                    }
+                }
+                /*Når man står på højre side og kigger mod venstre slår ham. */
+                if(currentDirection.equals(Direction.WEST)) {
+                    if ((player.getX()) > enemy.getX()
+                            && enemy.getX() < (player.getX() + 32)
+                            && (player.getY() - 10) < enemy.getY()
+                            && enemy.getY() < (player.getY() + 10)) {
+                        System.out.println("enemy hit. From east." + enemyLife);
+                        enemyLife -= playerDMG;
+
+                    }
+                }
+                /*Når man står på venstre side og slår mod højre*/
+                if(currentDirection.equals(Direction.EAST)) {
+                    if ((player.getX()) < enemy.getX()
+                            && enemy.getX() < (player.getX() + 32)
+                            && (player.getY() - 10) < enemy.getY()
+                            && enemy.getY() < (player.getY() + 10)) {
+                        System.out.println("enemy hit. From west?." + enemyLife);
+                        enemyLife -= playerDMG;
+
+                    }
+                }
+
+                /*Spørg om enemy bliver ramt, hvis ja, mister han liv..*/
+
+                //hittingFunctions.whereToHit(currentDirection);
 
             }
 
@@ -223,7 +260,7 @@ public class Main extends GameApplication {
                 settings.setTitle("Legends Arise");
                 //settings.setMenuEnabled(true); //Viser menuen.
                 settings.setIntroEnabled(false); //Fjerner introen
-                settings.setVersion("0.1");
+                settings.setVersion("0.2");
             }
 
             public static void main(String args[]){
