@@ -8,7 +8,7 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.time.LocalTimer;
 import javafx.util.Duration;
 
-
+/*IKKE BRUGT*/
 public class EnemyControl extends Control {
     Main mainCaller = new Main();
 
@@ -31,8 +31,6 @@ public class EnemyControl extends Control {
     }
 
     public void jump() {
-        mainCaller.enemyposXTilSpawn += 10;
-        mainCaller.enemyposYTilSpawn += 10;
 
 
     }

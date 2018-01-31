@@ -11,6 +11,7 @@ import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.util.Map;
 
@@ -26,11 +27,10 @@ public class Main extends GameApplication {
             int playerDMG = 10;//Package protected, da den skal bruges i andre klasser.
 
             public static Entity enemy;
-            int enemyposXTilSpawn = 450;
-            int enemyposYTilSpawn = 450;
 
 
             int enemyLife = 10;//Package protected, da den skal bruges i andre klasser.
+
 
             private boolean enemyAlive = true;
 
@@ -54,7 +54,7 @@ public class Main extends GameApplication {
                 this.enemyLife = enemyLife;
             }
 
-    /*Input fra bruger samt control af figuren */
+            /*Input fra bruger samt control af figuren */
             @Override
             protected void initInput() {
                 Input input = getInput(); //laver et input objekt
@@ -129,12 +129,16 @@ public class Main extends GameApplication {
                         .at(500,500)
                         .viewFromTexture("Turtle.png")
                         .buildAndAttach(getGameWorld());
-                int enemyposXTilSpawn = 450;
-                int enemyposYTilSpawn = 450;
 
 
-                getGameWorld().spawn("enemy",enemyposXTilSpawn,enemyposYTilSpawn);
 
+
+
+            }
+            @Override
+            protected void onUpdate(double tpf) {
+
+               enemy.translateTowards(player.getPosition(),0.1);//Får enemy til at gå imod spiller.
             }
 
             @Override
