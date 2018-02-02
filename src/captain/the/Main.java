@@ -9,6 +9,7 @@ import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
+import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -119,15 +120,15 @@ public class Main extends GameApplication {
             protected void initGame() {
                 player = Entities.builder()
                         .at(300,300)//player start pos
-                        .viewFromTexture("pixil-layer-Background.png")//Sætter figuren til at være dette billede
+                        .viewFromTexture("pixil-layer-Background-Standart.png")//Sætter figuren til at være dette billede
                         .buildAndAttach(getGameWorld());
-                player.setScaleX(3);//Scaleringen på X af figuren(player)
-                player.setScaleY(3);//Scaleringen på Y af figuren(player)
+                player.setScaleX(0.75);//Scaleringen på X af figuren(player)
+                player.setScaleY(0.75);//Scaleringen på Y af figuren(player)
 
 
                 enemy = Entities.builder()
                         .at(500,500)
-                        .viewFromTexture("Turtle.png")
+                        .viewFromTexture("enemystill.png")
                         .buildAndAttach(getGameWorld());
 
 
@@ -135,10 +136,31 @@ public class Main extends GameApplication {
 
 
             }
+            double point2dXRandomGen = (Math.random()*mapsizeX);
+            double point2dYRandomGen = (Math.random()*mapsizeY);
+
             @Override
             protected void onUpdate(double tpf) {
+                /* */
 
-               enemy.translateTowards(player.getPosition(),0.1);//Får enemy til at gå imod spiller.
+
+                Point2D point2DTilRandomSpot = new Point2D(point2dXRandomGen,point2dYRandomGen);
+                if((enemy.getX()==point2dXRandomGen)&&(point2dYRandomGen==enemy.getY())){
+                    point2dXRandomGen = (Math.random()*mapsizeX);
+                    point2dYRandomGen = (Math.random()*mapsizeY);
+                }
+
+                enemy.translateTowards(point2DTilRandomSpot,0.1);
+
+
+                /*Får bot/enemy til at rykke sig mod spiller*/
+
+                double point2dXTowards= (player.getX());
+                double point2dYTowards= (player.getY());
+
+                Point2D point2DTilSpiller = new Point2D(point2dXTowards,point2dYTowards);
+                //enemy.translateTowards(point2DTilSpiller,0.1);//Får enemy til at gå imod spiller.
+
             }
 
             @Override
@@ -192,16 +214,16 @@ public class Main extends GameApplication {
             /*Hitting "animation" samt skade til enemy. */
             @OnUserAction(name = "Hit", type = ActionType.ON_ACTION_BEGIN)
             public void hitBegin() {
-                Main.player.setViewFromTexture("pixil-layer-Background(1).png");
-                player.setScaleX(3);
-                player.setScaleY(3);
+                Main.player.setViewFromTexture("pixil-layer-Background-Attacking.png");
+                player.setScaleX(0.75);
+                player.setScaleY(0.75);
 
                 /*Når man står oppe over enemy og kigger ned */
                 if(currentDirection.equals(Direction.SOUTH)) {
                     if ((player.getY()) < enemy.getY()
-                            && enemy.getY() < (player.getY() + 32)
-                            && (player.getX() - 10) < enemy.getX()
-                            && enemy.getX() < (player.getX() + 10)) {
+                            && enemy.getY() < ((player.getY()) + 32)
+                            && ((player.getX()) - 10) < enemy.getX()
+                            && enemy.getX() < ((player.getX()) + 10)) {
                         System.out.println("enemy hit. From North." +enemyLife);
                         enemyLife-=playerDMG;
 
@@ -211,9 +233,9 @@ public class Main extends GameApplication {
                 /*Når man står neden under enemy og kigger op*/
                 if(currentDirection.equals(Direction.NORTH)) {
                     if ((player.getY()) > enemy.getY()
-                            && enemy.getY() < (player.getY() + 32)
-                            && (player.getX() - 10) < enemy.getX()
-                            && enemy.getX() < (player.getX() + 10)) {
+                            && enemy.getY() < ((player.getY()) + 32)
+                            && ((player.getX()) - 10) < enemy.getX()
+                            && enemy.getX() < ((player.getX()) + 10)) {
                         System.out.println("enemy hit. From South." + enemyLife);
                         enemyLife -= playerDMG;
 
@@ -222,9 +244,9 @@ public class Main extends GameApplication {
                 /*Når man står på højre side og kigger mod venstre slår ham. */
                 if(currentDirection.equals(Direction.WEST)) {
                     if ((player.getX()) > enemy.getX()
-                            && enemy.getX() < (player.getX() + 32)
-                            && (player.getY() - 10) < enemy.getY()
-                            && enemy.getY() < (player.getY() + 10)) {
+                            && enemy.getX() < ((player.getX()) + 32)
+                            && ((player.getY()) - 10) < enemy.getY()
+                            && enemy.getY() < ((player.getY()) + 10)) {
                         System.out.println("enemy hit. From east." + enemyLife);
                         enemyLife -= playerDMG;
 
@@ -233,9 +255,9 @@ public class Main extends GameApplication {
                 /*Når man står på venstre side og slår mod højre*/
                 if(currentDirection.equals(Direction.EAST)) {
                     if ((player.getX()) < enemy.getX()
-                            && enemy.getX() < (player.getX() + 32)
-                            && (player.getY() - 10) < enemy.getY()
-                            && enemy.getY() < (player.getY() + 10)) {
+                            && enemy.getX() < ((player.getX()) + 32)
+                            && ((player.getY()) - 10) < enemy.getY()
+                            && enemy.getY() < ((player.getY()) + 10)) {
                         System.out.println("enemy hit. From west?." + enemyLife);
                         enemyLife -= playerDMG;
 
@@ -244,16 +266,15 @@ public class Main extends GameApplication {
 
                 /*Spørg om enemy bliver ramt, hvis ja, mister han liv..*/
 
-                //hittingFunctions.whereToHit(currentDirection);
 
             }
 
 
             @OnUserAction(name = "Hit", type = ActionType.ON_ACTION_END)
             public void hitEnd() {
-                Main.player.setViewFromTexture("pixil-layer-Background.png");
-                player.setScaleX(3);
-                player.setScaleY(3);
+                Main.player.setViewFromTexture("pixil-layer-Background-Standart.png");
+                player.setScaleX(0.75);
+                player.setScaleY(0.75);
                 getAudioPlayer().playSound("aaeffect.mp3");
             }
 
