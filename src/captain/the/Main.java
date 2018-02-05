@@ -1,9 +1,14 @@
 package captain.the;
 
 import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.entity.Spawns;
+import com.almasb.fxgl.entity.component.CollidableComponent;
 import com.almasb.fxgl.input.ActionType;
 import com.almasb.fxgl.input.OnUserAction;
 import com.almasb.fxgl.input.InputMapping;
+import com.almasb.fxgl.physics.BoundingShape;
+import com.almasb.fxgl.physics.CollisionHandler;
+import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.settings.GameSettings;
 import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
@@ -11,14 +16,16 @@ import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.util.Map;
 
 public class Main extends GameApplication {
-            private int mapsizeX = 800;
-            private int mapsizeY = 800;
+            public static int mapsizeX = 800;
+            public static int mapsizeY = 800;
 
 
             public static Entity player;
@@ -28,10 +35,10 @@ public class Main extends GameApplication {
             int playerDMG = 10;//Package protected, da den skal bruges i andre klasser.
 
             public static Entity enemy;
-
-
             int enemyLife = 10;//Package protected, da den skal bruges i andre klasser.
 
+            public Entity bullet;
+            boolean isBulletAlive = false;
 
             private boolean enemyAlive = true;
 
@@ -113,6 +120,10 @@ public class Main extends GameApplication {
                 /*Når man slår */
                 input.addInputMapping(new InputMapping("Hit",KeyCode.J));
 
+                /**/
+                input.addInputMapping(new InputMapping("AutoAttack",KeyCode.K));
+
+
             }
 
 
@@ -127,8 +138,12 @@ public class Main extends GameApplication {
 
 
                 enemy = Entities.builder()
+                        .type(Types.ENEMY)
                         .at(500,500)
                         .viewFromTexture("enemystill.png")
+                        .bbox(new HitBox(BoundingShape.box(1,1)))
+                        .with(new EnemyControl())
+                        .with(new CollidableComponent(true))
                         .buildAndAttach(getGameWorld());
 
 
@@ -136,22 +151,13 @@ public class Main extends GameApplication {
 
 
             }
-            double point2dXRandomGen = (Math.random()*mapsizeX);
-            double point2dYRandomGen = (Math.random()*mapsizeY);
+
 
             @Override
             protected void onUpdate(double tpf) {
-                /* */
-
-
-                Point2D point2DTilRandomSpot = new Point2D(point2dXRandomGen,point2dYRandomGen);
-                if((enemy.getX()==point2dXRandomGen)&&(point2dYRandomGen==enemy.getY())){
-                    point2dXRandomGen = (Math.random()*mapsizeX);
-                    point2dYRandomGen = (Math.random()*mapsizeY);
+                if(isBulletAlive==true) {
+                    bullet.translateTowards(enemy.getCenter(), 1);
                 }
-
-                enemy.translateTowards(point2DTilRandomSpot,0.1);
-
 
                 /*Får bot/enemy til at rykke sig mod spiller*/
 
@@ -165,7 +171,13 @@ public class Main extends GameApplication {
 
             @Override
             protected void initPhysics(){
-
+                getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.ENEMY, Types.BULLET) {
+                    @Override
+                    protected void onCollisionBegin(Entity enemy, Entity coin) {
+                        bullet.removeFromWorld();
+                        isBulletAlive = false;
+                    }
+                });
             }
 
             @Override
@@ -277,6 +289,30 @@ public class Main extends GameApplication {
                 player.setScaleY(0.75);
                 getAudioPlayer().playSound("aaeffect.mp3");
             }
+
+            /**/
+            @OnUserAction(name = "AutoAttack", type = ActionType.ON_ACTION_BEGIN)
+            public void hitBeginAA(){
+
+                if (isBulletAlive == false) {
+                    isBulletAlive = true;
+
+                    bullet = Entities.builder()
+                            .type(Types.BULLET)
+
+                            .at((player.getX() + 64), (player.getY() + 64))
+                            .viewFromTextureWithBBox("Turtle.png")
+                            //.viewFromNodeWithBBox(new Rectangle(10,10,Color.BLUE))
+                            .with(new CollidableComponent(true))
+                            .buildAndAttach(getGameWorld());
+                }
+                }
+            @OnUserAction(name = "AutoAttack", type = ActionType.ON_ACTION_END)
+            public void hitEndAA() {
+                //bullet.removeFromWorld();
+
+                }
+
 
             @Override
             protected void initSettings(GameSettings settings) {

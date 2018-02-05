@@ -6,32 +6,42 @@ import com.almasb.fxgl.entity.Control;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.time.LocalTimer;
-import javafx.util.Duration;
+import javafx.geometry.Point2D;
 
-/*IKKE BRUGT*/
+import static captain.the.Main.enemy;
+import static captain.the.Main.mapsizeX;
+import static captain.the.Main.mapsizeY;
+
+/*VIRKER IKKE*/
 public class EnemyControl extends Control {
-    Main mainCaller = new Main();
+    private double point2dXRandomGen= (Math.random()*mapsizeX);
+    private double point2dYRandomGen= (Math.random()*mapsizeY);
 
-    private PhysicsComponent physics;
-
-    private LocalTimer jumpTimer;
-
-    @Override
-    public void onAdded(Entity entity) {
-        jumpTimer = FXGL.newLocalTimer();
-        jumpTimer.capture();
-    }
-
+    Point2D point2DTilRandomSpot = new Point2D(point2dXRandomGen,point2dYRandomGen);
     @Override
     public void onUpdate(Entity entity, double tpf) {
-        if (jumpTimer.elapsed(Duration.seconds(0.01))) {
-            jump();
-            jumpTimer.capture();
+        if(entity.getPosition()==point2DTilRandomSpot){
+            point2dXRandomGen = (Math.random()*mapsizeX)+200;
+            point2dYRandomGen = (Math.random()*mapsizeY)+200;
+            entity.translateTowards(point2DTilRandomSpot, 1);
+
+        }else {
+
+            entity.translateTowards(point2DTilRandomSpot, 1);
+
+        }
+        }
+
+    public void moveON(Entity entity){
+        if(entity.getPosition()==point2DTilRandomSpot){
+            point2dXRandomGen = (Math.random()*mapsizeX);
+            point2dYRandomGen = (Math.random()*mapsizeY);
+
+        }else {
+
+            entity.translateTowards(point2DTilRandomSpot, 1);
+
         }
     }
 
-    public void jump() {
-
-
-    }
 }

@@ -1,5 +1,5 @@
 package captain.the;
 
 public enum Types {
-    ENEMY, PLAYER, WALL
+    ENEMY, PLAYER, WALL, BULLET
 }

@@ -25,8 +25,19 @@ public class Factory implements EntityFactory {
                 .build();
 
 
+        }
 
+    @Spawns("bullet")
+    public  Entity newBullet(SpawnData data){
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.DYNAMIC);
 
-    }
+        return Entities.builder()
+                .type(Types.BULLET)
+                .from(data)
+                .with(new BulletControls())
+                .build();
+
+        }
 
 }
