@@ -5,6 +5,8 @@ import com.almasb.fxgl.entity.Control;
 import com.almasb.fxgl.entity.Spawns;
 import javafx.geometry.Point2D;
 
+import java.awt.*;
+
 
 public class BulletControls extends Control {
     private double targetXLocation = 100;
@@ -25,6 +27,11 @@ public class BulletControls extends Control {
 
     }
 
+    Point p = MouseInfo.getPointerInfo().getLocation();
 
 
+/*
+    public Point2D getMousepos(){
+        return Input.Scennput.getMousePositionUI();
+    }*/
 }

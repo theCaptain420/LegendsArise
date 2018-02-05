@@ -14,8 +14,13 @@ import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
+import com.sun.webkit.event.WCMouseWheelEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -24,8 +29,10 @@ import javafx.util.Duration;
 import java.util.Map;
 
 public class Main extends GameApplication {
+
             public static int mapsizeX = 800;
             public static int mapsizeY = 800;
+            Input input = new Input();
 
 
             public static Entity player;
@@ -121,7 +128,7 @@ public class Main extends GameApplication {
                 input.addInputMapping(new InputMapping("Hit",KeyCode.J));
 
                 /**/
-                input.addInputMapping(new InputMapping("AutoAttack",KeyCode.K));
+                input.addInputMapping(new InputMapping("AutoAttack", MouseButton.PRIMARY));
 
 
             }
@@ -178,6 +185,8 @@ public class Main extends GameApplication {
                         isBulletAlive = false;
                     }
                 });
+
+
             }
 
             @Override
@@ -290,22 +299,31 @@ public class Main extends GameApplication {
                 getAudioPlayer().playSound("aaeffect.mp3");
             }
 
+
+
+
             /**/
             @OnUserAction(name = "AutoAttack", type = ActionType.ON_ACTION_BEGIN)
             public void hitBeginAA(){
+                /*Hvis man klikker på enemy*/
+                if((input.getMouseXWorld()<enemy.getX()) && (enemy.getX()> (input.getMouseXUI()+ 128))){
+                    System.out.println("get mouse :" + input.getMousePositionUI()+" - get enemy : "+enemy.getX());
+                    if (isBulletAlive == false) {
+                        isBulletAlive = true;
 
-                if (isBulletAlive == false) {
-                    isBulletAlive = true;
+                        bullet = Entities.builder()
+                                .type(Types.BULLET)
 
-                    bullet = Entities.builder()
-                            .type(Types.BULLET)
-
-                            .at((player.getX() + 64), (player.getY() + 64))
-                            .viewFromTextureWithBBox("Turtle.png")
-                            //.viewFromNodeWithBBox(new Rectangle(10,10,Color.BLUE))
-                            .with(new CollidableComponent(true))
-                            .buildAndAttach(getGameWorld());
+                                .at((player.getX() + 64), (player.getY() + 64))
+                                .viewFromNodeWithBBox(new Rectangle(10,10,Color.BLUE))
+                                .with(new CollidableComponent(true))
+                                .buildAndAttach(getGameWorld());
+                    }
                 }
+
+
+
+
                 }
             @OnUserAction(name = "AutoAttack", type = ActionType.ON_ACTION_END)
             public void hitEndAA() {
@@ -321,7 +339,7 @@ public class Main extends GameApplication {
                 settings.setTitle("Legends Arise");
                 //settings.setMenuEnabled(true); //Viser menuen.
                 settings.setIntroEnabled(false); //Fjerner introen
-                settings.setVersion("0.2");
+                settings.setVersion("0.3");
             }
 
             public static void main(String args[]){
