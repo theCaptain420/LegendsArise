@@ -305,9 +305,28 @@ public class Main extends GameApplication {
             /**/
             @OnUserAction(name = "AutoAttack", type = ActionType.ON_ACTION_BEGIN)
             public void hitBeginAA(){
+                System.out.println(getInput().getMousePositionUI()+ " - " + enemy.getPosition() );
                 /*Hvis man klikker på enemy*/
-                if((input.getMouseXWorld()<enemy.getX()) && (enemy.getX()> (input.getMouseXUI()+ 128))){
-                    System.out.println("get mouse :" + input.getMousePositionUI()+" - get enemy : "+enemy.getX());
+
+                enemy.getView().setOnMouseClicked(event -> { if (isBulletAlive == false) {
+                    isBulletAlive = true;
+
+                    bullet = Entities.builder()
+                            .type(Types.BULLET)
+
+                            .at((player.getX() + 64), (player.getY() + 64))
+                            .viewFromNodeWithBBox(new Rectangle(10,10,Color.BLUE))
+                            .with(new CollidableComponent(true))
+                            .buildAndAttach(getGameWorld());
+                }});
+
+                /*
+                if((getInput().getMouseXUI()<enemy.getX())
+                        && (enemy.getX()< (getInput().getMouseXUI()+ 128))
+                        && (getInput().getMouseYUI()> enemy.getY())
+                        && ((getInput().getMouseYUI()+128)> enemy.getY())){
+
+                    System.out.println("hit");
                     if (isBulletAlive == false) {
                         isBulletAlive = true;
 
@@ -320,7 +339,7 @@ public class Main extends GameApplication {
                                 .buildAndAttach(getGameWorld());
                     }
                 }
-
+*/
 
 
 
