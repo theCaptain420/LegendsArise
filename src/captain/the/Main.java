@@ -36,10 +36,17 @@ public class Main extends GameApplication {
 
 
             public static Entity player;
-            int playerLife = 50; //Package protected, da den skal bruges i andre klasser.
-            boolean playerAlive = true;//Package protected, da den skal bruges i andre klasser.
+            int playerLife = 50; //hvor meget liv spiller har
+            boolean playerAlive = true;//er Spiller i live
             private Entity ability;
-            int playerDMG = 10;//Package protected, da den skal bruges i andre klasser.
+            int playerDMG = 10;
+            int playerAARange = 100; // AA range, hvor langt player kan slå
+            boolean isPlayerMoving = false; //Aktiveres når player skal gå et sted hen.
+            boolean playerOnlyAttacking= false;//Aktiveres hvis spiller ikke skal rykke sig, men kun skyde.
+            boolean cancelPlayerAA = false;//Gør at player kan AA forevigt ved 1 klik
+
+            Point2D clickedspot;//Hvor man har klikket på skærmen
+
 
             public static Entity enemy;
             int enemyLife = 10;//Package protected, da den skal bruges i andre klasser.
@@ -162,11 +169,23 @@ public class Main extends GameApplication {
 
             @Override
             protected void onUpdate(double tpf) {
+                /*Hvad AA skalgøre*/
                 if(isBulletAlive==true) {
                     bullet.translateTowards(enemy.getCenter(), 1);
                 }
 
-                /*Får bot/enemy til at rykke sig mod spiller*/
+
+                /*Hvad player skal gøre når han skal rykke sig.*/
+                if(isPlayerMoving==true&&playerOnlyAttacking==false){
+                    //(playerOnlyAttacking==false)Gør at player ikke rykker sig, hvis han angriber.
+                    //(isPlayerMoving==true)"spørg" om den skal køre denne funktion.
+                    player.translateTowards(clickedspot,movementspeed);
+
+                }
+
+
+
+                    /*Får bot/enemy til at rykke sig mod spiller*/
 
                 double point2dXTowards= (player.getX());
                 double point2dYTowards= (player.getY());
@@ -305,20 +324,36 @@ public class Main extends GameApplication {
             /**/
             @OnUserAction(name = "AutoAttack", type = ActionType.ON_ACTION_BEGIN)
             public void hitBeginAA(){
-                System.out.println(getInput().getMousePositionUI()+ " - " + enemy.getPosition() );
-                /*Hvis man klikker på enemy-*/
 
+
+                /*Hvis man klikker på enemy-"Autoattack"*/
                 enemy.getView().setOnMouseClicked(event -> { if (isBulletAlive == false) {
-                    isBulletAlive = true;
+                        isBulletAlive = true;
+                        playerOnlyAttacking = true;
 
-                    bullet = Entities.builder()
-                            .type(Types.BULLET)
+                        bullet = Entities.builder()
+                                .type(Types.BULLET)
 
-                            .at((player.getX() + 64), (player.getY() + 64))
-                            .viewFromNodeWithBBox(new Rectangle(10,10,Color.BLUE))
-                            .with(new CollidableComponent(true))
-                            .buildAndAttach(getGameWorld());
-                }});
+                                .at((player.getX() + 64), (player.getY() + 64))
+                                .viewFromNodeWithBBox(new Rectangle(10, 10, Color.BLUE))
+                                .with(new CollidableComponent(true))
+                                .buildAndAttach(getGameWorld());
+
+                    }});
+
+                if (isBulletAlive==true){ //gør at man ikke kan rykke sig mens man skyder.
+                    playerOnlyAttacking=true;//Køre en funktion oppe i onUpdate.
+                }
+
+                /*Hvis man bare klikker på mappet/hvis man vil rykke sig*/
+                    clickedspot = getInput().getMousePositionUI();
+                    isPlayerMoving=true;
+                    if(isPlayerMoving==true){
+                        cancelPlayerAA=true;
+                    }
+
+
+
 
                 /*
                 if((getInput().getMouseXUI()<enemy.getX())
@@ -347,8 +382,13 @@ public class Main extends GameApplication {
             @OnUserAction(name = "AutoAttack", type = ActionType.ON_ACTION_END)
             public void hitEndAA() {
                 //bullet.removeFromWorld();
+                playerOnlyAttacking = false;//gør den tilbage til false, så han kan rykke sig igen bagefter.
 
-                }
+            }
+
+            public void launchBullets(){
+
+            }
 
 
             @Override
