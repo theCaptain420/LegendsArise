@@ -306,7 +306,7 @@ public class Main extends GameApplication {
             @OnUserAction(name = "AutoAttack", type = ActionType.ON_ACTION_BEGIN)
             public void hitBeginAA(){
                 System.out.println(getInput().getMousePositionUI()+ " - " + enemy.getPosition() );
-                /*Hvis man klikker på enemy*/
+                /*Hvis man klikker på enemy-*/
 
                 enemy.getView().setOnMouseClicked(event -> { if (isBulletAlive == false) {
                     isBulletAlive = true;
