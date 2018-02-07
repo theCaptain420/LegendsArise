@@ -14,9 +14,7 @@ import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
-import com.sun.webkit.event.WCMouseWheelEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -72,11 +70,11 @@ public class Main extends GameApplication {
             /*Input fra bruger samt control af figuren */
             @Override
             protected void initInput() {
-                Input input = getInput(); //laver et input objekt
+                //Input input = getInput(); //laver et input objekt
                 input.addAction(new UserAction("Play Sound") {
                 @Override
                     protected void onActionBegin(){
-                    //getAudioPlayer().playSound("pumpedUpKicks.mp3");
+                    //getAudioPlayer().playSound(".mp3");
                 }
                 }, KeyCode.F);
 
@@ -128,7 +126,7 @@ public class Main extends GameApplication {
                 input.addInputMapping(new InputMapping("Hit",KeyCode.J));
 
                 /**/
-                input.addInputMapping(new InputMapping("AutoAttack", MouseButton.PRIMARY));
+                input.addInputMapping(new InputMapping("LeftClickerino", MouseButton.PRIMARY));
 
 
             }
@@ -302,23 +300,29 @@ public class Main extends GameApplication {
 
 
 
-            /**/
-            @OnUserAction(name = "AutoAttack", type = ActionType.ON_ACTION_BEGIN)
+            /**//*
+            @OnUserAction(name = "LeftClickerino", type = ActionType.ON_ACTION_BEGIN)
             public void hitBeginAA(){
-                System.out.println(getInput().getMousePositionUI()+ " - " + enemy.getPosition() );
+                //System.out.println(getInput().getMousePositionUI()+ " - " + enemy.getPosition() );
                 /*Hvis man klikker på enemy*/
+                /*AKA. Auto attack. */
+/*
+                enemy.getView().setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if (isBulletAlive == false) {
+                            isBulletAlive = true;
 
-                enemy.getView().setOnMouseClicked(event -> { if (isBulletAlive == false) {
-                    isBulletAlive = true;
+                            bullet = Entities.builder()
+                                    .type(Types.BULLET)
 
-                    bullet = Entities.builder()
-                            .type(Types.BULLET)
+                                    .at((player.getX() + 64), (player.getY() + 64))
+                                    .viewFromNodeWithBBox(new Rectangle(10,10,Color.BLUE))
+                                    .with(new CollidableComponent(true))
+                                    .buildAndAttach(getGameWorld());
+                    }
+                }} );
 
-                            .at((player.getX() + 64), (player.getY() + 64))
-                            .viewFromNodeWithBBox(new Rectangle(10,10,Color.BLUE))
-                            .with(new CollidableComponent(true))
-                            .buildAndAttach(getGameWorld());
-                }});
 
                 /*
                 if((getInput().getMouseXUI()<enemy.getX())
@@ -343,7 +347,7 @@ public class Main extends GameApplication {
 
 
 
-                }
+                //}
             @OnUserAction(name = "AutoAttack", type = ActionType.ON_ACTION_END)
             public void hitEndAA() {
                 //bullet.removeFromWorld();

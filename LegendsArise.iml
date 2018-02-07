@@ -10,7 +10,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Documents/ThingsForJava/fxgl-0.4.1-uber.jar!/" />
+          <root url="jar://$USER_HOME$/Documents/ThingsForJava/fxgl-0.4.2-uber.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
