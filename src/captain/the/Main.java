@@ -50,6 +50,7 @@ public class Main extends GameApplication {
     Point2D pointedSpot2D =new Point2D(0,0) ;//Hvor man kaster abilitien hen
     boolean isQAbilityAlive = false;
     Entity qAbilityEntity;
+    int qAbilityDMG = 10;
     boolean isWAbilityAlive = false;
     Entity wAbilityEntity;
     boolean isEAbilityAlive = false;
@@ -105,7 +106,6 @@ public class Main extends GameApplication {
             protected void onAction() {
                 player.translateX(movementspeed);//går 1 pixel til højre ->
 
-                getGameState().increment("pixelsMoved", +1);
                 player.setRotation(90);
                 currentDirection = Direction.EAST;
             }
@@ -116,7 +116,6 @@ public class Main extends GameApplication {
             @Override
             protected void onAction() {
                 player.translateX(-movementspeed);//Går 1 pixel til venstre
-                getGameState().increment("pixelsMoved", +1);
                 player.setRotation(270);
                 currentDirection = Direction.WEST;
             }
@@ -127,7 +126,6 @@ public class Main extends GameApplication {
             @Override
             protected void onAction() {
                 player.translateY(-movementspeed);//Går 1 pixel op
-                getGameState().increment("pixelsMoved", +1);
                 player.setRotation(0);
                 currentDirection = Direction.NORTH;
             }
@@ -137,7 +135,6 @@ public class Main extends GameApplication {
             @Override
             protected void onAction() {
                 player.translateY(movementspeed);//Går 1 pixel ned
-                getGameState().increment("pixelsMoved", +1);
                 player.setRotation(180);
                 currentDirection = Direction.SOUTH;
             }
@@ -178,7 +175,7 @@ public class Main extends GameApplication {
 
     }
 
-    int timerinoQ=0;
+    double timerinoQ=0;
     @Override
     protected void onUpdate(double tpf) {
         /*Hvad AA skalgøre*/
@@ -195,10 +192,16 @@ public class Main extends GameApplication {
 
         }
 
-        /*Ability*/
+        /*Ability- Q*/
         if(isQAbilityAlive==true){
-            qAbilityEntity.translateTowards(pointedSpot2D, 1);
-
+            timerinoQ+=0.5;
+            if(timerinoQ<300) {
+                qAbilityEntity.translateTowards(pointedSpot2D, 1);
+            }else{
+                timerinoQ=0;//resetter timer til næste q.
+                isQAbilityAlive=false;
+                qAbilityEntity.removeFromWorld();//fjerner abilitien fra mappet.
+            }
         }
 
         /*Får bot/enemy til at rykke sig mod spiller*/
@@ -221,10 +224,11 @@ public class Main extends GameApplication {
             }
         });
 
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.QAbility, Types.MOUSEPOS) {
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.QAbility, Types.ENEMY) {
             @Override
-            protected void onCollisionBegin(Entity qAbilityEntity, Entity mousePosEntity) {
-                qAbilityEntity.removeFromWorld();
+            protected void onCollisionBegin(Entity qAbilityEntity, Entity enemy) {
+                enemyLife-=qAbilityDMG;
+                System.out.println(enemyLife);
             }
         });
 
@@ -233,19 +237,26 @@ public class Main extends GameApplication {
 
     @Override
     protected void initUI() {
-        Text textPixels = new Text();
-        textPixels.setTranslateX(50);//UI på 50X
-        textPixels.setTranslateY(50);//UI på 50Y
+        Text textPixelsText = new Text();
+        textPixelsText.setTranslateX(50);//UI på 50X
+        textPixelsText.setTranslateY(50);//UI på 50Y
+        getGameScene().addUINode(textPixelsText);//
+        textPixelsText.textProperty().bind(getGameState().stringProperty("playerLifeUI"));
 
-        getGameScene().addUINode(textPixels);//Burde skrive hvor meget man har rykket sig.
+        Text textPixelsNumbers = new Text();
+        textPixelsNumbers.setTranslateX(75);//UI på 50X
+        textPixelsNumbers.setTranslateY(50);//UI på 50Y
+        getGameScene().addUINode(textPixelsNumbers);
+        textPixelsNumbers.textProperty().bind(getGameState().intProperty("playerLifeInt").asString());//Printer pixelsMoved
 
-        textPixels.textProperty().bind(getGameState().intProperty("pixelsMoved").asString());//Printer pixelsMoved
+        //getGameState().increment("playerLifeInt", -10);
 
     }
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
-        vars.put("pixelsMoved", 0);
+        vars.put("playerLifeUI", "HP:");
+        vars.put("playerLifeInt", playerLife);
     }
 
             /*
@@ -416,3 +427,4 @@ public class Main extends GameApplication {
         launch(args);
     }
 }
+//                getGameState().increment("pixelsMoved", +1);
