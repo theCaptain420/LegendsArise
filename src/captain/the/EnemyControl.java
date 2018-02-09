@@ -12,7 +12,7 @@ import static captain.the.Main.enemy;
 import static captain.the.Main.mapsizeX;
 import static captain.the.Main.mapsizeY;
 
-/*VIRKER IKKE*/
+/*Enemy Control*/
 public class EnemyControl extends Control {
     private double point2dXRandomGen= (Math.random()*mapsizeX);
     private double point2dYRandomGen= (Math.random()*mapsizeY);
@@ -20,15 +20,16 @@ public class EnemyControl extends Control {
     Point2D point2DTilRandomSpot = new Point2D(point2dXRandomGen,point2dYRandomGen);
     @Override
     public void onUpdate(Entity entity, double tpf) {
-        if(entity.getPosition()==point2DTilRandomSpot){
-            point2dXRandomGen = (Math.random()*mapsizeX)+200;
-            point2dYRandomGen = (Math.random()*mapsizeY)+200;
-            entity.translateTowards(point2DTilRandomSpot, 1);
+        if(entity.distance(Main.player)<=100){
+            entity.translateTowards(Main.player.getPosition(), 0.2);
 
         }else {
 
-            entity.translateTowards(point2DTilRandomSpot, 1);
+            entity.translateTowards(Main.wallEntity.getPosition(), 0.2);
 
+        }
+        if(Main.enemyLife<=0){
+            enemy.removeFromWorld();
         }
         }
 

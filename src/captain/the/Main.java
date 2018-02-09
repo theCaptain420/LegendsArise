@@ -3,6 +3,7 @@ package captain.the;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.component.CollidableComponent;
+import com.almasb.fxgl.entity.view.ScrollingBackgroundView;
 import com.almasb.fxgl.input.ActionType;
 import com.almasb.fxgl.input.OnUserAction;
 import com.almasb.fxgl.input.InputMapping;
@@ -14,9 +15,11 @@ import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.texture.Texture;
 import com.sun.webkit.event.WCMouseWheelEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
+import javafx.geometry.Orientation;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -30,8 +33,8 @@ import java.util.Map;
 
 public class Main extends GameApplication {
 
-    public static int mapsizeX = 800;
-    public static int mapsizeY = 800;
+    public static int mapsizeX = 1230;
+    public static int mapsizeY = 487;
     Input input = new Input();
 
     /*Player Stuff*/
@@ -59,10 +62,17 @@ public class Main extends GameApplication {
 
     Point2D clickedspot;//Hvor man har klikket på skærmen
 
+    /*The Wall*/
+    public static Entity wallEntity;
+    int wallHP=5000;
+    boolean isWallAlive;
 
+    /*Enemy*/
     public static Entity enemy;
-    int enemyLife = 10;//Package protected, da den skal bruges i andre klasser.
+    public static int enemyLife = 100;//Package protected, da den skal bruges i andre klasser.
+    int enemyDMG=10;
 
+    /*Bullet/ Auto attack*/
     public Entity bullet;
     boolean isBulletAlive = false;
 
@@ -152,25 +162,34 @@ public class Main extends GameApplication {
 
     }
 
-
+    int enemySpawnOnY = (int) (Math.random()*mapsizeY);
     @Override
     protected void initGame() {
+        wallEntity = Entities.builder()
+                .at(0,0)
+                .type(Types.WALL)
+                .viewFromNodeWithBBox(new Rectangle(80,487,Color.BROWN))
+                .with(new CollidableComponent(true))
+                .buildAndAttach(getGameWorld());
+
+        //
         player = Entities.builder()
                 .at(300, 300)//player start pos
-                .viewFromTexture("pixil-layer-Background-Standart.png")//Sætter figuren til at være dette billede
+                .viewFromTextureWithBBox("pixil-layer-Background-Standart.png")//Sætter figuren til at være dette billede
                 .buildAndAttach(getGameWorld());
         player.setScaleX(0.75);//Scaleringen på X af figuren(player)
         player.setScaleY(0.75);//Scaleringen på Y af figuren(player)
 
-
+        //
         enemy = Entities.builder()
                 .type(Types.ENEMY)
-                .at(500, 500)
+                .at(mapsizeX, enemySpawnOnY)
                 .viewFromTexture("enemystill.png")
                 .bbox(new HitBox(BoundingShape.box(1, 1)))
                 .with(new EnemyControl())
                 .with(new CollidableComponent(true))
                 .buildAndAttach(getGameWorld());
+
 
 
     }
@@ -220,6 +239,7 @@ public class Main extends GameApplication {
             @Override
             protected void onCollisionBegin(Entity enemy, Entity coin) {
                 bullet.removeFromWorld();
+                enemyLife-=playerDMG;
                 isBulletAlive = false;
             }
         });
@@ -232,11 +252,24 @@ public class Main extends GameApplication {
             }
         });
 
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.WALL, Types.ENEMY) {
+            @Override
+            protected void onCollisionBegin(Entity wallEntity, Entity enemy) {
+                wallHP-=enemyDMG;
+                System.out.println(wallHP);
+            }
+        });
+
 
     }
 
     @Override
     protected void initUI() {
+        /*Sætter baggrund*/
+        Texture background = getAssetLoader().loadTexture("background.jpg");
+        ScrollingBackgroundView baggrund = new ScrollingBackgroundView(background, Orientation.HORIZONTAL);
+        getGameScene().addGameView(baggrund);
+
         Text textPixelsText = new Text();
         textPixelsText.setTranslateX(50);//UI på 50X
         textPixelsText.setTranslateY(50);//UI på 50Y
@@ -399,7 +432,7 @@ public class Main extends GameApplication {
             qAbilityEntity = Entities.builder()
 
                     .type(Types.QAbility)
-                    .at(player.getX()+64,player.getY()+64)
+                    .at(player.getX(),player.getY())
                     .viewFromTextureWithBBox("fidget-spinner.gif")
                     .with(new CollidableComponent(true))
                     .buildAndAttach(getGameWorld());
@@ -417,6 +450,7 @@ public class Main extends GameApplication {
         settings.setWidth(mapsizeX);
         settings.setHeight(mapsizeY);
         settings.setTitle("Legends Arise");
+
         //settings.setMenuEnabled(true); //Viser menuen.
         settings.setIntroEnabled(false); //Fjerner introen
         settings.setVersion("0.3");
