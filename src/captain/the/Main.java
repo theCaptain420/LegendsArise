@@ -15,10 +15,12 @@ import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.Texture;
 import com.sun.webkit.event.WCMouseWheelEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
+import javafx.geometry.BoundingBox;
 import javafx.geometry.Orientation;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
@@ -68,6 +70,7 @@ public class Main extends GameApplication {
     boolean isWallAlive;
 
     /*Enemy*/
+    EnemyControl enemyControl = new EnemyControl();
     public static Entity enemy;
     public static int enemyLife = 100;//Package protected, da den skal bruges i andre klasser.
     int enemyDMG=10;
@@ -175,7 +178,7 @@ public class Main extends GameApplication {
         //
         player = Entities.builder()
                 .at(300, 300)//player start pos
-                .viewFromTextureWithBBox("pixil-layer-Background-Standart.png")//Sætter figuren til at være dette billede
+                .viewFromTextureWithBBox("8bitcircle.png")//Sætter figuren til at være dette billede
                 .buildAndAttach(getGameWorld());
         player.setScaleX(0.75);//Scaleringen på X af figuren(player)
         player.setScaleY(0.75);//Scaleringen på Y af figuren(player)
@@ -184,13 +187,12 @@ public class Main extends GameApplication {
         enemy = Entities.builder()
                 .type(Types.ENEMY)
                 .at(mapsizeX, enemySpawnOnY)
-                .viewFromTexture("enemystill.png")
-                .bbox(new HitBox(BoundingShape.box(1, 1)))
+                .viewFromTextureWithBBox("8bitTriangle.png")
                 .with(new EnemyControl())
                 .with(new CollidableComponent(true))
                 .buildAndAttach(getGameWorld());
-
-
+        enemy.setScaleX(0.75);//Scaleringen på X af figuren(player)
+        enemy.setScaleY(0.75);//Scaleringen på Y af figuren(player)
 
     }
 
@@ -255,7 +257,9 @@ public class Main extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.WALL, Types.ENEMY) {
             @Override
             protected void onCollisionBegin(Entity wallEntity, Entity enemy) {
-                wallHP-=enemyDMG;
+                enemy.setViewFromTexture("pixelExplosion.gif");
+                wallHP-=enemyLife;
+                enemy.removeFromWorld();
                 System.out.println(wallHP);
             }
         });
@@ -265,11 +269,12 @@ public class Main extends GameApplication {
 
     @Override
     protected void initUI() {
-        /*Sætter baggrund*/
+        /*Sætter baggrund*/ // Bliver ikke brugt
+        /*
         Texture background = getAssetLoader().loadTexture("background.jpg");
         ScrollingBackgroundView baggrund = new ScrollingBackgroundView(background, Orientation.HORIZONTAL);
         getGameScene().addGameView(baggrund);
-
+*/
         Text textPixelsText = new Text();
         textPixelsText.setTranslateX(50);//UI på 50X
         textPixelsText.setTranslateY(50);//UI på 50Y
@@ -283,6 +288,7 @@ public class Main extends GameApplication {
         textPixelsNumbers.textProperty().bind(getGameState().intProperty("playerLifeInt").asString());//Printer pixelsMoved
 
         //getGameState().increment("playerLifeInt", -10);
+
 
     }
 
@@ -393,7 +399,7 @@ public class Main extends GameApplication {
                 bullet = Entities.builder()
                         .type(Types.BULLET)
 
-                        .at((player.getX() + 64), (player.getY() + 64))
+                        .at((player.getX() +32), (player.getY())+32)
                         .viewFromNodeWithBBox(new Rectangle(10, 10, Color.BLUE))
                         .with(new CollidableComponent(true))
                         .buildAndAttach(getGameWorld());
@@ -424,7 +430,12 @@ public class Main extends GameApplication {
     @OnUserAction(name = "QAbility", type = ActionType.ON_ACTION_BEGIN)
     public void hitBeginQ() {
         if(isQAbilityAlive==false){
-            pointedSpot2D = getInput().getMousePositionUI();
+            //Da vi gerne vil have q til at spawne inde i player(og billedet er stort med en lille spinner i midten)
+            //bliver jeg nødt til at justere dens spawn, samt hvor den skal hen.
+            double pointedSpot2D2x = (getInput().getMouseXUI()-128);
+            double pointedSpot2D2y = (getInput().getMouseYUI()-128);
+            pointedSpot2D = new Point2D(pointedSpot2D2x,pointedSpot2D2y);
+            //pointedSpot2D = getInput().getMousePositionUI();
             mousePosEntity = Entities.builder().type(Types.MOUSEPOS).at(pointedSpot2D).with(new CollidableComponent()).buildAndAttach(getGameWorld());
 
 
@@ -432,8 +443,9 @@ public class Main extends GameApplication {
             qAbilityEntity = Entities.builder()
 
                     .type(Types.QAbility)
-                    .at(player.getX(),player.getY())
-                    .viewFromTextureWithBBox("fidget-spinner.gif")
+                    .at((player.getX()-96),(player.getY()-96))
+                    .viewFromTexture("fidget-spinner.gif")
+                    .bbox(new HitBox(BoundingShape.circle(32)))
                     .with(new CollidableComponent(true))
                     .buildAndAttach(getGameWorld());
 
@@ -454,6 +466,11 @@ public class Main extends GameApplication {
         //settings.setMenuEnabled(true); //Viser menuen.
         settings.setIntroEnabled(false); //Fjerner introen
         settings.setVersion("0.3");
+    }
+    @Override
+    protected void preInit(){
+        getAudioPlayer().playMusic("fireAuraBackgroundMusic.mp3");
+
     }
 
     public static void main(String args[]) {

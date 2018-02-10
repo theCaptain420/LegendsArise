@@ -16,16 +16,21 @@ import static captain.the.Main.mapsizeY;
 public class EnemyControl extends Control {
     private double point2dXRandomGen= (Math.random()*mapsizeX);
     private double point2dYRandomGen= (Math.random()*mapsizeY);
+    private double enemyMovementSpeed = 0.2;
+
+    public void setEnemyMovementSpeed(double movementSpeed){
+        this.enemyMovementSpeed = movementSpeed;
+    }
 
     Point2D point2DTilRandomSpot = new Point2D(point2dXRandomGen,point2dYRandomGen);
     @Override
     public void onUpdate(Entity entity, double tpf) {
         if(entity.distance(Main.player)<=100){
-            entity.translateTowards(Main.player.getPosition(), 0.2);
+            entity.translateTowards(Main.player.getPosition(), enemyMovementSpeed);
 
         }else {
 
-            entity.translateTowards(Main.wallEntity.getPosition(), 0.2);
+            entity.translateTowards(Main.wallEntity.getPosition(), enemyMovementSpeed);
 
         }
         if(Main.enemyLife<=0){
