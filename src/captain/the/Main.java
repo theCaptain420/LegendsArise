@@ -1,5 +1,6 @@
 package captain.the;
 
+import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.component.CollidableComponent;
@@ -17,6 +18,7 @@ import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.Texture;
+import com.almasb.fxgl.time.LocalTimer;
 import com.sun.webkit.event.WCMouseWheelEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -74,12 +76,12 @@ public class Main extends GameApplication {
     public static Entity enemy;
     public static int enemyLife = 100;//Package protected, da den skal bruges i andre klasser.
     int enemyDMG=10;
+    private boolean enemyAlive = true;
+    boolean enemyOnWall = false;
 
     /*Bullet/ Auto attack*/
     public Entity bullet;
     boolean isBulletAlive = false;
-
-    private boolean enemyAlive = true;
 
 
     private double movementspeed = 0.3;
@@ -165,7 +167,9 @@ public class Main extends GameApplication {
 
     }
 
-    int enemySpawnOnY = (int) (Math.random()*mapsizeY);
+    /*public int enemySpawnOnY = (int) (Math.random()*mapsizeY);
+
+    public int getEnemySpawnOnY(){ return enemySpawnOnY;}*/
     @Override
     protected void initGame() {
         wallEntity = Entities.builder()
@@ -186,7 +190,7 @@ public class Main extends GameApplication {
         //
         enemy = Entities.builder()
                 .type(Types.ENEMY)
-                .at(mapsizeX, enemySpawnOnY)
+                .at(mapsizeX, enemyControl.getEnemySpawnOnY())
                 .viewFromTextureWithBBox("8bitTriangle.png")
                 .with(new EnemyControl())
                 .with(new CollidableComponent(true))
@@ -225,6 +229,14 @@ public class Main extends GameApplication {
             }
         }
 
+        /*Enemy på wall(får enemy til at skade wall)*/
+        /*if(enemyOnWall==true){
+            if(timer.elapsed(Duration.seconds(0.5))){
+                System.out.println("wall be takin dmg");
+            }
+        }*/
+
+
         /*Får bot/enemy til at rykke sig mod spiller*/
 
         double point2dXTowards = (player.getX());
@@ -258,8 +270,9 @@ public class Main extends GameApplication {
             @Override
             protected void onCollisionBegin(Entity wallEntity, Entity enemy) {
                 enemy.setViewFromTexture("pixelExplosion.gif");
-                wallHP-=enemyLife;
-                enemy.removeFromWorld();
+                enemyOnWall=true;
+                //wallHP-=enemyLife;
+                //enemy.removeFromWorld();
                 System.out.println(wallHP);
             }
         });
