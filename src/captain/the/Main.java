@@ -187,7 +187,20 @@ public class Main extends GameApplication {
         player.setScaleX(0.75);//Scaleringen på X af figuren(player)
         player.setScaleY(0.75);//Scaleringen på Y af figuren(player)
 
-        //
+/*
+        enemy = Entities.builder()
+                .type(Types.ENEMY)
+                .at(mapsizeX, enemyControl.getEnemySpawnOnY())
+                .viewFromTextureWithBBox("8bitTriangle.png")
+                .with(new EnemyControl())
+                .with(new CollidableComponent(true))
+                .buildAndAttach(getGameWorld());
+        enemy.setScaleX(0.75);//Scaleringen på X af figuren(player)
+        enemy.setScaleY(0.75);//Scaleringen på Y af figuren(player)
+*/
+    }
+
+    public void spawnEnemy(){
         enemy = Entities.builder()
                 .type(Types.ENEMY)
                 .at(mapsizeX, enemyControl.getEnemySpawnOnY())
@@ -199,13 +212,20 @@ public class Main extends GameApplication {
         enemy.setScaleY(0.75);//Scaleringen på Y af figuren(player)
 
     }
-
+    double spawnEnemyTimerino=1100;
     double timerinoQ=0;
     @Override
     protected void onUpdate(double tpf) {
         /*Hvad AA skalgøre*/
         if (isBulletAlive == true) {
             bullet.translateTowards(enemy.getCenter(), 1);
+        }
+
+        if(spawnEnemyTimerino>1000){
+            spawnEnemy();
+            spawnEnemyTimerino=0;
+        }else{
+            spawnEnemyTimerino+=1;
         }
 
 
@@ -253,6 +273,7 @@ public class Main extends GameApplication {
             @Override
             protected void onCollisionBegin(Entity enemy, Entity coin) {
                 bullet.removeFromWorld();
+
                 enemyLife-=playerDMG;
                 isBulletAlive = false;
             }
@@ -474,11 +495,11 @@ public class Main extends GameApplication {
     protected void initSettings(GameSettings settings) {
         settings.setWidth(mapsizeX);
         settings.setHeight(mapsizeY);
-        settings.setTitle("Legends Arise");
+        settings.setTitle("Legends Arise Alpha");
 
         //settings.setMenuEnabled(true); //Viser menuen.
         settings.setIntroEnabled(false); //Fjerner introen
-        settings.setVersion("0.3");
+        settings.setVersion("0.4.1");
     }
     @Override
     protected void preInit(){

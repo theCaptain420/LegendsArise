@@ -18,6 +18,9 @@ public class EnemyControl extends Control {
     private double enemyMovementSpeed = 0.2;
     public int enemySpawnOnY = (int) (Math.random()*mapsizeY);
 
+    private int LocalEnemylife = 50;
+    public void setLocalEnemylife(int DMG){ this.LocalEnemylife -=DMG;}//Ændrer enemy liv.
+
     public void setEnemyMovementSpeed(double movementSpeed){
         this.enemyMovementSpeed = movementSpeed;
     }
@@ -35,7 +38,7 @@ public class EnemyControl extends Control {
             entity.translateTowards(point2dWallerino, enemyMovementSpeed);
 
         }
-        if(Main.enemyLife<=0){
+        if(LocalEnemylife<=0){
             enemy.removeFromWorld();
         }
 
@@ -53,6 +56,7 @@ public class EnemyControl extends Control {
 
         }
     }
+
 
     public int getEnemySpawnOnY(){ return enemySpawnOnY;}
 
