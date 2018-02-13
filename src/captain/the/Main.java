@@ -55,6 +55,7 @@ public class Main extends GameApplication {
     /*Abilities*/
     Entity mousePosEntity;
     Point2D pointedSpot2D =new Point2D(0,0) ;//Hvor man kaster abilitien hen
+    Point2D pointedSpot2DForAA =new Point2D(0,0) ;//Hvor man kaster abilitien hen
     boolean isQAbilityAlive = false;
     Entity qAbilityEntity;
     int qAbilityDMG = 10;
@@ -108,52 +109,46 @@ public class Main extends GameApplication {
     @Override
     protected void initInput() {
         Input input = getInput(); //laver et input objekt
-        input.addAction(new UserAction("Play Sound") {
-            @Override
-            protected void onActionBegin() {
-                //getAudioPlayer().playSound(".mp3");
-            }
-        }, KeyCode.F);
-
         /*Manual Movement #1*/
+
         input.addAction(new UserAction("Move Right") {
-            @Override
-            protected void onAction() {
-                player.translateX(movementspeed);//går 1 pixel til højre ->
+        @Override
+        protected void onAction() {
+            player.translateX(movementspeed);//går 1 pixel til højre ->
 
-                player.setRotation(90);
-                currentDirection = Direction.EAST;
-            }
+            player.setRotation(90);
+            currentDirection = Direction.EAST;
+        }
 
-        }, KeyCode.RIGHT);
-        /*Manual Movement #2*/
+    }, KeyCode.D);
+    /*Manual Movement #2*/
         input.addAction(new UserAction("Move Left") {
-            @Override
-            protected void onAction() {
-                player.translateX(-movementspeed);//Går 1 pixel til venstre
-                player.setRotation(270);
-                currentDirection = Direction.WEST;
-            }
+        @Override
+        protected void onAction() {
+            player.translateX(-movementspeed);//Går 1 pixel til venstre
+            player.setRotation(270);
+            currentDirection = Direction.WEST;
+        }
 
-        }, KeyCode.LEFT);
-        /*Manual Movement #3*/
+    }, KeyCode.A);
+    /*Manual Movement #3*/
         input.addAction(new UserAction("Move Up") {
-            @Override
-            protected void onAction() {
-                player.translateY(-movementspeed);//Går 1 pixel op
-                player.setRotation(0);
-                currentDirection = Direction.NORTH;
-            }
-        }, KeyCode.UP);
-        /*Manual Movement #4*/
+        @Override
+        protected void onAction() {
+            player.translateY(-movementspeed);//Går 1 pixel op
+            player.setRotation(0);
+            currentDirection = Direction.NORTH;
+        }
+    }, KeyCode.W);
+    /*Manual Movement #4*/
         input.addAction(new UserAction("Move Down") {
-            @Override
-            protected void onAction() {
-                player.translateY(movementspeed);//Går 1 pixel ned
-                player.setRotation(180);
-                currentDirection = Direction.SOUTH;
-            }
-        }, KeyCode.DOWN);
+        @Override
+        protected void onAction() {
+            player.translateY(movementspeed);//Går 1 pixel ned
+            player.setRotation(180);
+            currentDirection = Direction.SOUTH;
+        }
+    }, KeyCode.S);
 
         /*Når man slår-Basic attack(bliver ikke brugt) */
         input.addInputMapping(new InputMapping("Hit", KeyCode.J));
@@ -187,7 +182,7 @@ public class Main extends GameApplication {
         player.setScaleX(0.75);//Scaleringen på X af figuren(player)
         player.setScaleY(0.75);//Scaleringen på Y af figuren(player)
 
-/*
+
         enemy = Entities.builder()
                 .type(Types.ENEMY)
                 .at(mapsizeX, enemyControl.getEnemySpawnOnY())
@@ -197,7 +192,7 @@ public class Main extends GameApplication {
                 .buildAndAttach(getGameWorld());
         enemy.setScaleX(0.75);//Scaleringen på X af figuren(player)
         enemy.setScaleY(0.75);//Scaleringen på Y af figuren(player)
-*/
+
     }
 
     public void spawnEnemy(){
@@ -212,24 +207,37 @@ public class Main extends GameApplication {
         enemy.setScaleY(0.75);//Scaleringen på Y af figuren(player)
 
     }
+    public Entity getEntities(){
+        return (Entity) getGameWorld().getEntities();
+    }
+
     double spawnEnemyTimerino=1100;
     double timerinoQ=0;
+    double bulletTimerino = 0;
     @Override
     protected void onUpdate(double tpf) {
         /*Hvad AA skalgøre*/
         if (isBulletAlive == true) {
-            bullet.translateTowards(enemy.getCenter(), 1);
+            bullet.translateTowards(pointedSpot2DForAA, 1);
+            if (bulletTimerino<300){
+                bulletTimerino++;
+            }else {
+                bullet.removeFromWorld();
+                bulletTimerino =0;
+                isBulletAlive = false;
+            }
         }
 
         if(spawnEnemyTimerino>1000){
-            spawnEnemy();
+            getGameWorld().spawn("enemy",500,200);
+
             spawnEnemyTimerino=0;
         }else{
             spawnEnemyTimerino+=1;
         }
 
 
-        /*Hvad player skal gøre når han skal rykke sig.*/
+        /*Hvad player skal gøre når han skal rykke sig.*///bliver ikke brugt
         if (isPlayerMoving == true && playerOnlyAttacking == false) {
             //(playerOnlyAttacking==false)Gør at player ikke rykker sig, hvis han angriber.
             //(isPlayerMoving==true)"spørg" om den skal køre denne funktion.
@@ -424,7 +432,9 @@ public class Main extends GameApplication {
     /**/
     @OnUserAction(name = "AutoAttack", type = ActionType.ON_ACTION_BEGIN)
     public void hitBeginAA() {
-        /*Hvis man klikker på enemy-"Autoattack"*/
+
+
+        /*Hvis man klikker på enemy-"Autoattack"*//*
         enemy.getView().setOnMouseClicked(event -> {
             if (isBulletAlive == false) {
                 isBulletAlive = true;
@@ -432,31 +442,45 @@ public class Main extends GameApplication {
 
                 bullet = Entities.builder()
                         .type(Types.BULLET)
-
                         .at((player.getX() +32), (player.getY())+32)
                         .viewFromNodeWithBBox(new Rectangle(10, 10, Color.BLUE))
                         .with(new CollidableComponent(true))
                         .buildAndAttach(getGameWorld());
 
             }
-        });
+        });*/
+        double pointedSpot2D2x = (getInput().getMouseXUI());
+        double pointedSpot2D2y = (getInput().getMouseYUI());
+        //pointedSpot2D = new Point2D(pointedSpot2D2x,pointedSpot2D2y);
+        if (isBulletAlive == false) {
+            pointedSpot2DForAA = new Point2D(pointedSpot2D2x,pointedSpot2D2y);
+            isBulletAlive = true;
+            playerOnlyAttacking = true;
 
+            bullet = Entities.builder()
+                    .type(Types.BULLET)
+                    .at((player.getX() +32), (player.getY())+32)
+                    .viewFromNodeWithBBox(new Rectangle(10, 10, Color.BLUE))
+                    .with(new CollidableComponent(true))
+                    .buildAndAttach(getGameWorld());
+        }
+/*
         if (isBulletAlive == true) { //gør at man ikke kan rykke sig mens man skyder.
             playerOnlyAttacking = true;//Køre en funktion oppe i onUpdate.
         }
 
-        /*Hvis man bare klikker på mappet/hvis man vil rykke sig*/
+        /*Hvis man bare klikker på mappet/hvis man vil rykke sig*//*
         clickedspot = getInput().getMousePositionUI();
         isPlayerMoving = true;
         if (isPlayerMoving == true) {
             cancelPlayerAA = true;
-        }
+        }*/
     }
 
     @OnUserAction(name = "AutoAttack", type = ActionType.ON_ACTION_END)
     public void hitEndAA() {
         //bullet.removeFromWorld();
-        playerOnlyAttacking = false;//gør den tilbage til false, så han kan rykke sig igen bagefter.
+        //playerOnlyAttacking = false;//gør den tilbage til false, så han kan rykke sig igen bagefter.
 
     }
     /*Q ability*/
@@ -496,7 +520,7 @@ public class Main extends GameApplication {
         settings.setWidth(mapsizeX);
         settings.setHeight(mapsizeY);
         settings.setTitle("Legends Arise Alpha");
-
+        settings.setFullScreenAllowed(true);
         //settings.setMenuEnabled(true); //Viser menuen.
         settings.setIntroEnabled(false); //Fjerner introen
         settings.setVersion("0.4.1");

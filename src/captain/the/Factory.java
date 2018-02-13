@@ -7,13 +7,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 @SetEntityFactory
 public class Factory implements EntityFactory {
-
+    int counterino;
     @Spawns("enemy")
     public Entity newEnemy(SpawnData data) {
-        PhysicsComponent physics = new PhysicsComponent();
-        physics.setBodyType(BodyType.DYNAMIC);
 
         return Entities.builder()
                 .type(Types.ENEMY)
@@ -23,7 +23,8 @@ public class Factory implements EntityFactory {
                 .build();
 
 
-        }
+    }
+        /*
 
     @Spawns("bullet")
     public  Entity newBullet(SpawnData data){
@@ -37,5 +38,6 @@ public class Factory implements EntityFactory {
                 .build();
 
         }
+*/
 
 }
