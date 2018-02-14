@@ -54,25 +54,26 @@ public class Main extends GameApplication {
     boolean cancelPlayerAA = false;//Gør at player kan AA forevigt ved 1 klik
     /*Abilities*/
     Entity mousePosEntity;
-    Point2D pointedSpot2D =new Point2D(0,0) ;//Hvor man kaster abilitien hen
+    Point2D pointedSpot2DForAbility =new Point2D(0,0) ;//Hvor man kaster abilitien hen
     Point2D pointedSpot2DForAA =new Point2D(0,0) ;//Hvor man kaster abilitien hen
     boolean isQAbilityAlive = false;
     Entity qAbilityEntity;
-    int qAbilityDMG = 10;
-    boolean isWAbilityAlive = false;
-    Entity wAbilityEntity;
+    int qAbilityDMG = 50;
     boolean isEAbilityAlive = false;
     Entity eAbilityEntity;
 
 
+
     Point2D clickedspot;//Hvor man har klikket på skærmen
 
-    /*The Wall*/
+    /*The Wall & UI*/
     public static Entity wallEntity;
-    int wallHP=5000;
+    int wallHP=250;
     boolean isWallAlive;
+    Entity UIEntity;
 
     /*Enemy*/
+    int enemiesSlainCounter = 0;
     EnemyControl enemyControl = new EnemyControl();
     public static Entity enemy;
     public static int enemyLife = 100;//Package protected, da den skal bruges i andre klasser.
@@ -101,27 +102,21 @@ public class Main extends GameApplication {
         return enemyLife;
     }
 
-    public void setEnemyLife(int enemyLife) {
-        this.enemyLife = enemyLife;
-    }
-
-    /*Input fra bruger samt control af figuren */
+    /*-Input fra bruger (control af figuren) -*/
     @Override
     protected void initInput() {
         Input input = getInput(); //laver et input objekt
-        /*Manual Movement #1*/
-
+        /*Manual Movement #1 til højre*/
         input.addAction(new UserAction("Move Right") {
         @Override
         protected void onAction() {
             player.translateX(movementspeed);//går 1 pixel til højre ->
-
             player.setRotation(90);
             currentDirection = Direction.EAST;
         }
 
     }, KeyCode.D);
-    /*Manual Movement #2*/
+    /*Manual Movement #2 til venstre*/
         input.addAction(new UserAction("Move Left") {
         @Override
         protected void onAction() {
@@ -131,7 +126,7 @@ public class Main extends GameApplication {
         }
 
     }, KeyCode.A);
-    /*Manual Movement #3*/
+    /*Manual Movement #3 op*/
         input.addAction(new UserAction("Move Up") {
         @Override
         protected void onAction() {
@@ -140,7 +135,7 @@ public class Main extends GameApplication {
             currentDirection = Direction.NORTH;
         }
     }, KeyCode.W);
-    /*Manual Movement #4*/
+    /*Manual Movement #4 ned*/
         input.addAction(new UserAction("Move Down") {
         @Override
         protected void onAction() {
@@ -150,65 +145,47 @@ public class Main extends GameApplication {
         }
     }, KeyCode.S);
 
-        /*Når man slår-Basic attack(bliver ikke brugt) */
-        input.addInputMapping(new InputMapping("Hit", KeyCode.J));
-
+        /*-Tillader at afspille metoder, der er skrevet længere nede. -*/
         /*Q - Ability*/
         input.addInputMapping(new InputMapping("QAbility", KeyCode.Q));
-
         /*Left Click - Movement og AA*/
         input.addInputMapping(new InputMapping("AutoAttack", MouseButton.PRIMARY));
 
 
     }
 
-    /*public int enemySpawnOnY = (int) (Math.random()*mapsizeY);
 
-    public int getEnemySpawnOnY(){ return enemySpawnOnY;}*/
     @Override
     protected void initGame() {
-        wallEntity = Entities.builder()
-                .at(0,0)
-                .type(Types.WALL)
-                .viewFromNodeWithBBox(new Rectangle(80,487,Color.BROWN))
-                .with(new CollidableComponent(true))
+        /*Sætter UI billede i world*/
+        UIEntity = Entities.builder()
+                .at(((mapsizeX/2)-100),370)
+                .viewFromTexture("HPMANAHP.png")
                 .buildAndAttach(getGameWorld());
+        UIEntity.setScaleX(0.50);
+        UIEntity.setScaleY(0.50);
 
-        //
+
+        /*Sætter Væg i world*/
+        wallEntity = Entities.builder()
+                .at(0,0)//pos
+                .type(Types.WALL)//type
+                .viewFromNodeWithBBox(new Rectangle(80,487,Color.BROWN))//Dens form samt en hitbox om den
+                .with(new CollidableComponent(true))//den can collide med andre entities.
+                .buildAndAttach(getGameWorld());//bliver placeret i world
+
+        /*Sætter Player i world.*/
         player = Entities.builder()
                 .at(300, 300)//player start pos
-                .viewFromTextureWithBBox("8bitcircle.png")//Sætter figuren til at være dette billede
-                .buildAndAttach(getGameWorld());
+                .type(Types.PLAYER)//Af hvilken type player er.
+                .viewFromTextureWithBBox("8bitcircle.png")//Sætter figuren til at være dette billede(med hitbox af dette billede)
+                .with(new CollidableComponent(true))//den can collide med andre entities.
+                .buildAndAttach(getGameWorld());//Sætter den i verdenen
         player.setScaleX(0.75);//Scaleringen på X af figuren(player)
         player.setScaleY(0.75);//Scaleringen på Y af figuren(player)
 
-/*
-        enemy = Entities.builder()
-                .type(Types.ENEMY)
-                .at(mapsizeX, enemyControl.getEnemySpawnOnY())
-                .viewFromTextureWithBBox("8bitTriangle.png")
-                .with(new EnemyControl())
-                .with(new CollidableComponent(true))
-                .buildAndAttach(getGameWorld());
-        enemy.setScaleX(0.75);//Scaleringen på X af figuren(player)
-        enemy.setScaleY(0.75);//Scaleringen på Y af figuren(player)
-*/
-    }
 
-    public void spawnEnemy(){
-        enemy = Entities.builder()
-                .type(Types.ENEMY)
-                .at(mapsizeX, enemyControl.getEnemySpawnOnY())
-                .viewFromTextureWithBBox("8bitTriangle.png")
-                .with(new EnemyControl())
-                .with(new CollidableComponent(true))
-                .buildAndAttach(getGameWorld());
-        enemy.setScaleX(0.75);//Scaleringen på X af figuren(player)
-        enemy.setScaleY(0.75);//Scaleringen på Y af figuren(player)
 
-    }
-    public Entity getEntities(){
-        return (Entity) getGameWorld().getEntities();
     }
 
     double spawnEnemyTimerino=1100;
@@ -229,7 +206,7 @@ public class Main extends GameApplication {
         }
 
         if(spawnEnemyTimerino>1000){
-            getGameWorld().spawn("enemy",500,200);
+            getGameWorld().spawn("enemy",mapsizeX,(mapsizeY/2));
 
             spawnEnemyTimerino=0;
         }else{
@@ -249,7 +226,7 @@ public class Main extends GameApplication {
         if(isQAbilityAlive==true){
             timerinoQ+=0.5;
             if(timerinoQ<300) {
-                qAbilityEntity.translateTowards(pointedSpot2D, 1);
+                qAbilityEntity.translateTowards(pointedSpot2DForAbility, 1);
             }else{
                 timerinoQ=0;//resetter timer til næste q.
                 isQAbilityAlive=false;
@@ -285,20 +262,26 @@ public class Main extends GameApplication {
                 if(enemyControl.getLocalEnemylife()<=0){
                     enemy.removeFromWorld();
                     enemyControl.resetLocalEnemyLife();
+                    getGameState().increment("enemiesslain", +1);
+
                 }
 
                 isBulletAlive = false;
             }
         });
 
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.QAbility, Types.ENEMY) {
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.ENEMY, Types.QAbility) {
             @Override
-            protected void onCollisionBegin(Entity qAbilityEntity, Entity enemy) {
-                enemyControl.setLocalEnemylife(qAbilityDMG);
+            protected void onCollisionBegin(Entity enemy, Entity QAbilty) {
+                enemy.removeFromWorld();
+                getGameState().increment("enemiesslain", +1);
+
+                /*Det er er ikke nødvendigt, da jeg gerne vil have at qability OneShotter enemies*/
+                /*enemyControl.setLocalEnemylife(qAbilityDMG);
                 if(enemyControl.getLocalEnemylife()<=0){
                     enemy.removeFromWorld();
                     enemyControl.resetLocalEnemyLife();
-                }
+                }*/
 
             }
         });
@@ -306,43 +289,68 @@ public class Main extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.WALL, Types.ENEMY) {
             @Override
             protected void onCollisionBegin(Entity wallEntity, Entity enemy) {
-                enemy.setViewFromTexture("pixelExplosion.gif");
+                enemy.setViewFromTexture("pixelExplosion.gif");//viser explosion gif når wall bliver ramt
                 enemyOnWall=true;
-                wallHP -= enemyControl.getLocalEnemylife();
-                getAudioPlayer().playSound("Explosion6.mp3");
-                //wallHP-=enemyLife;
-                //enemy.removeFromWorld();
-                System.out.println(wallHP);
+                wallHP -= enemyControl.getLocalEnemylife();//får wall til at miste liv
+                getAudioPlayer().playSound("Explosion6.mp3");//afspiller eksplosion når wall bliver ramt
+                getGameState().increment("playerLifeWall", -enemyControl.getLocalEnemylife()); //får wall til at miste liv
             }
         });
 
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.ENEMY, Types.PLAYER) {
+            @Override
+            protected void onCollisionBegin(Entity enemy, Entity entity) {
+                playerLife-=enemyDMG;
+                getGameState().increment("playerLifeInt", -enemyDMG);
+                enemy.setX(entity.getX()+100); //Skubber den 100 pixels væk
+                if(playerLife<=0){
+                    getDisplay().showConfirmationBox("u ded... \n" + "Enemies slain : " + getGameState().getProperties().put("enemiesslain","yes"), yes -> {
+                        if (yes){exit();}
+                    });
+                }
+            }
+        });
 
     }
 
     @Override
     protected void initUI() {
-
-        Text textPixelsText = new Text();
-        textPixelsText.setTranslateX(50);//UI på 50X
-        textPixelsText.setTranslateY(50);//UI på 50Y
-        getGameScene().addUINode(textPixelsText);//
-        textPixelsText.textProperty().bind(getGameState().stringProperty("playerLifeUI"));
-
+        //PlayerHP
         Text textPixelsNumbers = new Text();
-        textPixelsNumbers.setTranslateX(75);//UI på 50X
-        textPixelsNumbers.setTranslateY(50);//UI på 50Y
+        textPixelsNumbers.setTranslateX((mapsizeX/2)+10);//UI på X
+        textPixelsNumbers.setTranslateY(mapsizeY-67);//UI på Y
         getGameScene().addUINode(textPixelsNumbers);
         textPixelsNumbers.textProperty().bind(getGameState().intProperty("playerLifeInt").asString());//Printer pixelsMoved
 
-        //getGameState().increment("playerLifeInt", -10);
+        //PlayerMana
+        Text textPixelsNumbers2 = new Text();
+        textPixelsNumbers2.setTranslateX((mapsizeX/2)+9);//UI på X
+        textPixelsNumbers2.setTranslateY(mapsizeY-50);//UI på Y
+        getGameScene().addUINode(textPixelsNumbers2);
+        textPixelsNumbers2.textProperty().bind(getGameState().intProperty("playerLifeIntMan").asString());//Printer pixelsMoved
+
+        //WallHP
+        Text textPixelsNumbers3 = new Text();
+        textPixelsNumbers3.setTranslateX((mapsizeX/2)+9);//UI på X
+        textPixelsNumbers3.setTranslateY(mapsizeY-33);//UI på Y
+        getGameScene().addUINode(textPixelsNumbers3);
+        textPixelsNumbers3.textProperty().bind(getGameState().intProperty("playerLifeWall").asString());//Printer pixelsMoved
+
+        //EnemiesSlain
+
+        Text textPixelsNumbers4 = new Text();
+        textPixelsNumbers3.textProperty().bind(getGameState().intProperty("enemiesslain").asString());//Printer pixelsMoved
+        //getGameState().increment("enemiesslain", +1);
 
 
     }
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
-        vars.put("playerLifeUI", "HP:");
+        vars.put("playerLifeIntMan", playerMANA);
+        vars.put("playerLifeWall", wallHP);
         vars.put("playerLifeInt", playerLife);
+        vars.put("enemiesslain",enemiesSlainCounter);
     }
 
 
@@ -405,32 +413,31 @@ public class Main extends GameApplication {
 
     }
     /*Q ability*/
-    int QabilityCost = 10;//hvor meget abilitien koster at bruge
+    int qAbilityCost = 20;//hvor meget abilitien koster at bruge
     @OnUserAction(name = "QAbility", type = ActionType.ON_ACTION_BEGIN)
     public void hitBeginQ() {
-        if(isQAbilityAlive==false){
+        if(isQAbilityAlive==false&&(playerMANA>=qAbilityCost)){
             //Da vi gerne vil have q til at spawne inde i player(og billedet er stort med en lille spinner i midten)
             //bliver jeg nødt til at justere dens spawn, samt hvor den skal hen.
-            double pointedSpot2D2x = (getInput().getMouseXUI()-128);
-            double pointedSpot2D2y = (getInput().getMouseYUI()-128);
-            pointedSpot2D = new Point2D(pointedSpot2D2x,pointedSpot2D2y);
+            double pointedSpot2D2x = (getInput().getMouseXUI()-25);
+            double pointedSpot2D2y = (getInput().getMouseYUI()-25);
+            pointedSpot2DForAbility = new Point2D(pointedSpot2D2x,pointedSpot2D2y);
             //pointedSpot2D = getInput().getMousePositionUI();
-            mousePosEntity = Entities.builder().type(Types.MOUSEPOS).at(pointedSpot2D).with(new CollidableComponent()).buildAndAttach(getGameWorld());
+            mousePosEntity = Entities.builder().type(Types.MOUSEPOS).at(pointedSpot2DForAbility).with(new CollidableComponent()).buildAndAttach(getGameWorld());
 
 
             isQAbilityAlive=true;
             qAbilityEntity = Entities.builder()
 
                     .type(Types.QAbility)
-                    .at((player.getX()-96),(player.getY()-96))
-                    .viewFromTexture("fidget-spinner.gif")
-                    .bbox(new HitBox(BoundingShape.circle(32)))
+                    .at((player.getX()),(player.getY()))
+                    .viewFromTextureWithBBox("qAbility.gif")
+                    //.bbox(new HitBox(BoundingShape.circle(32)))
                     .with(new CollidableComponent(true))
                     .buildAndAttach(getGameWorld());
 
-            qAbilityEntity.setScaleX(0.2);
-            qAbilityEntity.setScaleY(0.2);
-            playerMANA-=QabilityCost;
+            getGameState().increment("playerLifeIntMan", -qAbilityCost);
+            playerMANA-=qAbilityCost;
         }
     }
 
@@ -444,7 +451,7 @@ public class Main extends GameApplication {
         settings.setFullScreenAllowed(true);
         //settings.setMenuEnabled(true); //Viser menuen.
         settings.setIntroEnabled(false); //Fjerner introen
-        settings.setVersion("0.4.1");
+        settings.setVersion("0.5.3");
     }
     @Override
     protected void preInit(){

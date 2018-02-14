@@ -131,4 +131,12 @@ public class UnusedMethods {
         player.setScaleY(0.75);
         getAudioPlayer().playSound("aaeffect.mp3");
     }*/
+
+/*-----------------------*/
+/*Timer*/
+/*TimerAction timerAction = getMasterTimer().runAtInterval(() -> {
+    // ...
+}, Duration.seconds(0.5));*/
+
+
 }
