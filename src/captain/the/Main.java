@@ -182,7 +182,7 @@ public class Main extends GameApplication {
         player.setScaleX(0.75);//Scaleringen på X af figuren(player)
         player.setScaleY(0.75);//Scaleringen på Y af figuren(player)
 
-
+/*
         enemy = Entities.builder()
                 .type(Types.ENEMY)
                 .at(mapsizeX, enemyControl.getEnemySpawnOnY())
@@ -192,7 +192,7 @@ public class Main extends GameApplication {
                 .buildAndAttach(getGameWorld());
         enemy.setScaleX(0.75);//Scaleringen på X af figuren(player)
         enemy.setScaleY(0.75);//Scaleringen på Y af figuren(player)
-
+*/
     }
 
     public void spawnEnemy(){
@@ -281,8 +281,12 @@ public class Main extends GameApplication {
             @Override
             protected void onCollisionBegin(Entity enemy, Entity coin) {
                 bullet.removeFromWorld();
+                enemyControl.setLocalEnemylife(playerDMG);
+                if(enemyControl.getLocalEnemylife()<=0){
+                    enemy.removeFromWorld();
+                    enemyControl.resetLocalEnemyLife();
+                }
 
-                enemyLife-=playerDMG;
                 isBulletAlive = false;
             }
         });
@@ -290,8 +294,12 @@ public class Main extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.QAbility, Types.ENEMY) {
             @Override
             protected void onCollisionBegin(Entity qAbilityEntity, Entity enemy) {
-                enemyLife-=qAbilityDMG;
-                System.out.println(enemyLife);
+                enemyControl.setLocalEnemylife(qAbilityDMG);
+                if(enemyControl.getLocalEnemylife()<=0){
+                    enemy.removeFromWorld();
+                    enemyControl.resetLocalEnemyLife();
+                }
+
             }
         });
 
@@ -300,6 +308,8 @@ public class Main extends GameApplication {
             protected void onCollisionBegin(Entity wallEntity, Entity enemy) {
                 enemy.setViewFromTexture("pixelExplosion.gif");
                 enemyOnWall=true;
+                wallHP -= enemyControl.getLocalEnemylife();
+                getAudioPlayer().playSound("Explosion6.mp3");
                 //wallHP-=enemyLife;
                 //enemy.removeFromWorld();
                 System.out.println(wallHP);
@@ -311,12 +321,7 @@ public class Main extends GameApplication {
 
     @Override
     protected void initUI() {
-        /*Sætter baggrund*/ // Bliver ikke brugt
-        /*
-        Texture background = getAssetLoader().loadTexture("background.jpg");
-        ScrollingBackgroundView baggrund = new ScrollingBackgroundView(background, Orientation.HORIZONTAL);
-        getGameScene().addGameView(baggrund);
-*/
+
         Text textPixelsText = new Text();
         textPixelsText.setTranslateX(50);//UI på 50X
         textPixelsText.setTranslateY(50);//UI på 50Y
@@ -340,93 +345,9 @@ public class Main extends GameApplication {
         vars.put("playerLifeInt", playerLife);
     }
 
-            /*
-            public void getDirection(){
-                Entity ability = new Entity();
-                ability.translateX(player.getX()+20);
-                ability.translateY(player.getY()+20);
-                ability.setProperty("alive",true);
-
-                float directionX = (float) player.getX();
-                float directionY = (float) player.getY();
-
-                if(currentDirection == Direction.NORTH){
-                    directionX += 20;
-                }else if(currentDirection == Direction.SOUTH){
-                    directionX -= 20;
-                }else if(currentDirection == Direction.WEST){
-                    directionY += 20;
-                }else if(currentDirection == Direction.EAST){
-                    directionY -= 20;
-                }
-
-            }*/
-
-    /*Hitting "animation" samt skade til enemy. */
-    @OnUserAction(name = "Hit", type = ActionType.ON_ACTION_BEGIN)
-    public void hitBegin() {
-        Main.player.setViewFromTexture("pixil-layer-Background-Attacking.png");
-        player.setScaleX(0.75);
-        player.setScaleY(0.75);
-        /*Når man står oppe over enemy og kigger ned */
-        if (currentDirection.equals(Direction.SOUTH)) {
-            if ((player.getY()) < enemy.getY()
-                    && enemy.getY() < ((player.getY()) + 32)
-                    && ((player.getX()) - 10) < enemy.getX()
-                    && enemy.getX() < ((player.getX()) + 10)) {
-                System.out.println("enemy hit. From North." + enemyLife);
-                enemyLife -= playerDMG;
 
 
-            }
-        }
-        /*Når man står neden under enemy og kigger op*/
-        if (currentDirection.equals(Direction.NORTH)) {
-            if ((player.getY()) > enemy.getY()
-                    && enemy.getY() < ((player.getY()) + 32)
-                    && ((player.getX()) - 10) < enemy.getX()
-                    && enemy.getX() < ((player.getX()) + 10)) {
-                System.out.println("enemy hit. From South." + enemyLife);
-                enemyLife -= playerDMG;
 
-            }
-        }
-        /*Når man står på højre side og kigger mod venstre slår ham. */
-        if (currentDirection.equals(Direction.WEST)) {
-            if ((player.getX()) > enemy.getX()
-                    && enemy.getX() < ((player.getX()) + 32)
-                    && ((player.getY()) - 10) < enemy.getY()
-                    && enemy.getY() < ((player.getY()) + 10)) {
-                System.out.println("enemy hit. From east." + enemyLife);
-                enemyLife -= playerDMG;
-
-            }
-        }
-        /*Når man står på venstre side og slår mod højre*/
-        if (currentDirection.equals(Direction.EAST)) {
-            if ((player.getX()) < enemy.getX()
-                    && enemy.getX() < ((player.getX()) + 32)
-                    && ((player.getY()) - 10) < enemy.getY()
-                    && enemy.getY() < ((player.getY()) + 10)) {
-                System.out.println("enemy hit. From west?." + enemyLife);
-                enemyLife -= playerDMG;
-
-            }
-        }
-
-        /*Spørg om enemy bliver ramt, hvis ja, mister han liv..*/
-
-
-    }
-
-
-    @OnUserAction(name = "Hit", type = ActionType.ON_ACTION_END)
-    public void hitEnd() {
-        Main.player.setViewFromTexture("pixil-layer-Background-Standart.png");
-        player.setScaleX(0.75);
-        player.setScaleY(0.75);
-        getAudioPlayer().playSound("aaeffect.mp3");
-    }
 
 
     /**/

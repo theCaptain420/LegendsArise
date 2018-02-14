@@ -19,7 +19,10 @@ public class EnemyControl extends Control {
     public int enemySpawnOnY = (int) (Math.random()*mapsizeY);
 
     private int LocalEnemylife = 50;
-    public void setLocalEnemylife(int DMG){ this.LocalEnemylife -=DMG;}//Ændrer enemy liv.
+    public void setLocalEnemylife(int DMG){ this.LocalEnemylife -=DMG;
+        System.out.println("enemy life to :"+this.LocalEnemylife);}//Ændrer enemy liv.
+    public int getLocalEnemylife(){return LocalEnemylife;}
+    public void resetLocalEnemyLife(){this.LocalEnemylife=50; }
 
     public void setEnemyMovementSpeed(double movementSpeed){
         this.enemyMovementSpeed = movementSpeed;
@@ -39,7 +42,7 @@ public class EnemyControl extends Control {
 
         }
         if(LocalEnemylife<=0){
-            enemy.removeFromWorld();
+            entity.removeFromWorld();
         }
 
 

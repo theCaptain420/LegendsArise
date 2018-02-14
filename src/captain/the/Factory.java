@@ -1,6 +1,7 @@
 package captain.the;
 
 import com.almasb.fxgl.entity.*;
+import com.almasb.fxgl.entity.component.CollidableComponent;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import javafx.scene.paint.Color;
@@ -18,9 +19,13 @@ public class Factory implements EntityFactory {
         return Entities.builder()
                 .type(Types.ENEMY)
                 .from(data)
-                .viewFromNodeWithBBox(new Rectangle(30, 30, Color.RED))
+                //.viewFromTextureWithBBox("8bitTriangle.png")
+                .viewFromNodeWithBBox(new Rectangle(25, 25, Color.RED))
+                .with(new CollidableComponent(true))
                 .with(new EnemyControl())
                 .build();
+
+
 
 
     }
