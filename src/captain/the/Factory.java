@@ -12,7 +12,10 @@ import java.util.ArrayList;
 
 @SetEntityFactory
 public class Factory implements EntityFactory {
+    EnemyControl enemyControl = new EnemyControl();
     int counterino;
+    Color color = Color.RED;
+
     @Spawns("enemy")
     public Entity newEnemy(SpawnData data) {
 
@@ -20,7 +23,7 @@ public class Factory implements EntityFactory {
                 .type(Types.ENEMY)
                 .from(data)
                 //.viewFromTextureWithBBox("8bitTriangle.png")
-                .viewFromNodeWithBBox(new Rectangle(25, 25, Color.RED))
+                .viewFromNodeWithBBox(new Rectangle(25, 25, color))
                 .with(new CollidableComponent(true))
                 .with(new EnemyControl())
                 .build();
@@ -29,6 +32,8 @@ public class Factory implements EntityFactory {
 
 
     }
+
+
         /*
 
     @Spawns("bullet")
@@ -45,4 +50,7 @@ public class Factory implements EntityFactory {
         }
 */
 
+    public void setColor(Color color) {
+        this.color = color;
+    }
 }

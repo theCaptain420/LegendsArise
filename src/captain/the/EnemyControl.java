@@ -7,6 +7,8 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.time.LocalTimer;
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import static captain.the.Main.*;
@@ -18,11 +20,12 @@ public class EnemyControl extends Control {
     private double enemyMovementSpeed = 0.2;
     public int enemySpawnOnY = (int) (Math.random()*mapsizeY);
 
-    private int LocalEnemylife = 50;
+    private int localEnemylifeBaseHP = 50;
+    private int LocalEnemylife = localEnemylifeBaseHP;
     public void setLocalEnemylife(int DMG){ this.LocalEnemylife -=DMG;
         System.out.println("enemy life to :"+this.LocalEnemylife);}//Ændrer enemy liv.
     public int getLocalEnemylife(){return LocalEnemylife;}
-    public void resetLocalEnemyLife(){this.LocalEnemylife=50; }
+    public void resetLocalEnemyLife(){this.LocalEnemylife=localEnemylifeBaseHP; }
 
     public void setEnemyMovementSpeed(double movementSpeed){
         this.enemyMovementSpeed = movementSpeed;
@@ -60,6 +63,7 @@ public class EnemyControl extends Control {
         }
     }
 
+    public void setLocalEnemylifeBaseHP(int i){ this.localEnemylifeBaseHP=i;    }
 
     public int getEnemySpawnOnY(){ return enemySpawnOnY;}
 

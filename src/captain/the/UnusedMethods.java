@@ -138,5 +138,27 @@ public class UnusedMethods {
     // ...
 }, Duration.seconds(0.5));*/
 
+/*----------------------*/
+    /*Enemy på wall(får enemy til at skade wall)*/
+        /*if(enemyOnWall==true){
+            if(timer.elapsed(Duration.seconds(0.5))){
+                System.out.println("wall be takin dmg");
+            }
+        }*/
+
+/*---------------------*/
+
+    /*Får bot/enemy til at rykke sig mod spiller*//*
+
+    double point2dXTowards = (player.getX());
+    double point2dYTowards = (player.getY());
+
+    Point2D point2DTilSpiller = new Point2D(point2dXTowards, point2dYTowards);
+    //enemy.translateTowards(point2DTilSpiller,0.1);//Får enemy til at gå imod spiller.
+    */
+
+/*---------------------------------*/
+
+
 
 }

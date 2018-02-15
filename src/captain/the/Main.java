@@ -36,6 +36,7 @@ import javafx.util.Duration;
 import java.util.Map;
 
 public class Main extends GameApplication {
+    Factory factory = new Factory();
 
     public static int mapsizeX = 1230;
     public static int mapsizeY = 487;
@@ -234,26 +235,17 @@ public class Main extends GameApplication {
             }
         }
 
-        /*Enemy på wall(får enemy til at skade wall)*/
-        /*if(enemyOnWall==true){
-            if(timer.elapsed(Duration.seconds(0.5))){
-                System.out.println("wall be takin dmg");
-            }
-        }*/
-
-
-        /*Får bot/enemy til at rykke sig mod spiller*/
-
-        double point2dXTowards = (player.getX());
-        double point2dYTowards = (player.getY());
-
-        Point2D point2DTilSpiller = new Point2D(point2dXTowards, point2dYTowards);
-        //enemy.translateTowards(point2DTilSpiller,0.1);//Får enemy til at gå imod spiller.
+        /**/
+        if (enemiesSlainCounter>5){
+            factory.setColor(Color.BLACK);
+            enemyControl.setLocalEnemylifeBaseHP(75);
+        }
 
     }
 
     @Override
     protected void initPhysics() {
+        /*-Metode der checker om der er collision mellem en enemy entity og bullet entity, samt hvad den skal gøre-*/
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.ENEMY, Types.BULLET) {
             @Override
             protected void onCollisionBegin(Entity enemy, Entity coin) {
@@ -263,6 +255,9 @@ public class Main extends GameApplication {
                     enemy.removeFromWorld();
                     enemyControl.resetLocalEnemyLife();
                     getGameState().increment("enemiesslain", +1);
+                    getGameState().increment("playerLifeIntMan", +2);//får mana for hver enemyslain
+                    enemiesSlainCounter++;
+                    playerMANA+=2;
 
                 }
 
@@ -270,12 +265,15 @@ public class Main extends GameApplication {
             }
         });
 
+        /*-Metode der checker om der er collision mellem en enemy entity og qAbility entity, samt hvad den skal gøre-*/
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.ENEMY, Types.QAbility) {
             @Override
             protected void onCollisionBegin(Entity enemy, Entity QAbilty) {
                 enemy.removeFromWorld();
                 getGameState().increment("enemiesslain", +1);
-
+                getGameState().increment("playerLifeIntMan", +2);//får mana for hver enemyslain
+                playerMANA+=2;
+                enemiesSlainCounter++;
                 /*Det er er ikke nødvendigt, da jeg gerne vil have at qability OneShotter enemies*/
                 /*enemyControl.setLocalEnemylife(qAbilityDMG);
                 if(enemyControl.getLocalEnemylife()<=0){
@@ -286,6 +284,7 @@ public class Main extends GameApplication {
             }
         });
 
+        /*-Metode der checker om der er collision mellem en wall entity og enemy entity, samt hvad den skal gøre-*/
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.WALL, Types.ENEMY) {
             @Override
             protected void onCollisionBegin(Entity wallEntity, Entity enemy) {
@@ -293,16 +292,25 @@ public class Main extends GameApplication {
                 enemyOnWall=true;
                 wallHP -= enemyControl.getLocalEnemylife();//får wall til at miste liv
                 getAudioPlayer().playSound("Explosion6.mp3");//afspiller eksplosion når wall bliver ramt
-                getGameState().increment("playerLifeWall", -enemyControl.getLocalEnemylife()); //får wall til at miste liv
+                getGameState().increment("LifeWall", -enemyControl.getLocalEnemylife()); //får wall til at miste liv
+                //Hvis wall hp er under 0, laver den gameover
+                if(wallHP<=0){
+                    getDisplay().showConfirmationBox("u ded... \n" + "Enemies slain : " + getGameState().getProperties().put("enemiesslain","yes"), yes -> {
+                        if (yes){exit();}
+                    });
+                }
             }
         });
 
+        /*-Metode der checker om der er collision mellem en enemy entity og player entity, samt hvad den skal gøre-*/
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.ENEMY, Types.PLAYER) {
             @Override
             protected void onCollisionBegin(Entity enemy, Entity entity) {
-                playerLife-=enemyDMG;
-                getGameState().increment("playerLifeInt", -enemyDMG);
+                playerLife-=enemyDMG; //Ændre player liv i koden.
+
+                getGameState().increment("playerLifeInt", -enemyDMG);//(Til UI), ændre værdien af player liv
                 enemy.setX(entity.getX()+100); //Skubber den 100 pixels væk
+                //Hvis player hp er under 0, laver den gameover
                 if(playerLife<=0){
                     getDisplay().showConfirmationBox("u ded... \n" + "Enemies slain : " + getGameState().getProperties().put("enemiesslain","yes"), yes -> {
                         if (yes){exit();}
@@ -334,13 +342,13 @@ public class Main extends GameApplication {
         textPixelsNumbers3.setTranslateX((mapsizeX/2)+9);//UI på X
         textPixelsNumbers3.setTranslateY(mapsizeY-33);//UI på Y
         getGameScene().addUINode(textPixelsNumbers3);
-        textPixelsNumbers3.textProperty().bind(getGameState().intProperty("playerLifeWall").asString());//Printer pixelsMoved
+        textPixelsNumbers3.textProperty().bind(getGameState().intProperty("LifeWall").asString());//Printer pixelsMoved
 
         //EnemiesSlain
 
         Text textPixelsNumbers4 = new Text();
-        textPixelsNumbers3.textProperty().bind(getGameState().intProperty("enemiesslain").asString());//Printer pixelsMoved
-        //getGameState().increment("enemiesslain", +1);
+        textPixelsNumbers4.textProperty().bind(getGameState().intProperty("enemiesslain").asString());//Printer pixelsMoved
+        //getGameState().increment("playerLifeIntMan", +1);
 
 
     }
@@ -348,7 +356,7 @@ public class Main extends GameApplication {
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("playerLifeIntMan", playerMANA);
-        vars.put("playerLifeWall", wallHP);
+        vars.put("LifeWall", wallHP);
         vars.put("playerLifeInt", playerLife);
         vars.put("enemiesslain",enemiesSlainCounter);
     }
