@@ -74,7 +74,7 @@ public class Main extends GameApplication {
     Entity UIEntity;
 
     /*Enemy*/
-    int enemiesSlainCounter = 0;
+    int enemiesSlainCounter = 1;
     EnemyControl enemyControl = new EnemyControl();
     public static Entity enemy;
     public static int enemyLife = 100;//Package protected, da den skal bruges i andre klasser.
@@ -190,6 +190,7 @@ public class Main extends GameApplication {
     }
 
     double spawnEnemyTimerino=1100;
+    double enemySpawnerinoTimer = 800;
     double timerinoQ=0;
     double bulletTimerino = 0;
     @Override
@@ -206,9 +207,8 @@ public class Main extends GameApplication {
             }
         }
 
-        if(spawnEnemyTimerino>1000){
+        if(spawnEnemyTimerino>enemySpawnerinoTimer){
             getGameWorld().spawn("enemy",mapsizeX,(mapsizeY/2));
-
             spawnEnemyTimerino=0;
         }else{
             spawnEnemyTimerino+=1;
@@ -235,11 +235,7 @@ public class Main extends GameApplication {
             }
         }
 
-        /**/
-        if (enemiesSlainCounter>5){
-            factory.setColor(Color.BLACK);
-            enemyControl.setLocalEnemylifeBaseHP(75);
-        }
+
 
     }
 
@@ -255,9 +251,12 @@ public class Main extends GameApplication {
                     enemy.removeFromWorld();
                     enemyControl.resetLocalEnemyLife();
                     getGameState().increment("enemiesslain", +1);
-                    getGameState().increment("playerLifeIntMan", +2);//får mana for hver enemyslain
+                    getGameState().increment("playerLifeIntMan", +1);//får mana for hver enemyslain
                     enemiesSlainCounter++;
-                    playerMANA+=2;
+                    playerMANA+=1;
+                    getAudioPlayer().globalSoundVolumeProperty().setValue(0.2); //sætter volume af sounds
+                    getAudioPlayer().playSound("Beep2.mp3");//afspiller sound
+
 
                 }
 
@@ -274,12 +273,15 @@ public class Main extends GameApplication {
                 getGameState().increment("playerLifeIntMan", +2);//får mana for hver enemyslain
                 playerMANA+=2;
                 enemiesSlainCounter++;
+                getAudioPlayer().globalSoundVolumeProperty().setValue(0.2); //sætter volume af sounds
+                getAudioPlayer().playSound("Beep2.mp3");//afspiller sound
                 /*Det er er ikke nødvendigt, da jeg gerne vil have at qability OneShotter enemies*/
                 /*enemyControl.setLocalEnemylife(qAbilityDMG);
                 if(enemyControl.getLocalEnemylife()<=0){
                     enemy.removeFromWorld();
                     enemyControl.resetLocalEnemyLife();
                 }*/
+
 
             }
         });
@@ -289,6 +291,8 @@ public class Main extends GameApplication {
             @Override
             protected void onCollisionBegin(Entity wallEntity, Entity enemy) {
                 enemy.setViewFromTexture("pixelExplosion.gif");//viser explosion gif når wall bliver ramt
+                getAudioPlayer().globalSoundVolumeProperty().setValue(0.2); //sætter volume af sounds
+                getAudioPlayer().playSound("Explosion6.mp3");//afspiller sound
                 enemyOnWall=true;
                 wallHP -= enemyControl.getLocalEnemylife();//får wall til at miste liv
                 getAudioPlayer().playSound("Explosion6.mp3");//afspiller eksplosion når wall bliver ramt
@@ -297,6 +301,7 @@ public class Main extends GameApplication {
                 if(wallHP<=0){
                     getDisplay().showConfirmationBox("u ded... \n" + "Enemies slain : " + getGameState().getProperties().put("enemiesslain","yes"), yes -> {
                         if (yes){exit();}
+
                     });
                 }
             }
@@ -366,30 +371,16 @@ public class Main extends GameApplication {
 
 
 
-    /**/
+    /*Når man venstre kikker kommer der 1 skud ud, dette er metoden.*/
     @OnUserAction(name = "AutoAttack", type = ActionType.ON_ACTION_BEGIN)
     public void hitBeginAA() {
 
-
-        /*Hvis man klikker på enemy-"Autoattack"*//*
-        enemy.getView().setOnMouseClicked(event -> {
-            if (isBulletAlive == false) {
-                isBulletAlive = true;
-                playerOnlyAttacking = true;
-
-                bullet = Entities.builder()
-                        .type(Types.BULLET)
-                        .at((player.getX() +32), (player.getY())+32)
-                        .viewFromNodeWithBBox(new Rectangle(10, 10, Color.BLUE))
-                        .with(new CollidableComponent(true))
-                        .buildAndAttach(getGameWorld());
-
-            }
-        });*/
         double pointedSpot2D2x = (getInput().getMouseXUI());
         double pointedSpot2D2y = (getInput().getMouseYUI());
         //pointedSpot2D = new Point2D(pointedSpot2D2x,pointedSpot2D2y);
         if (isBulletAlive == false) {
+            getAudioPlayer().globalSoundVolumeProperty().setValue(0.2); //sætter volume af sounds
+            getAudioPlayer().playSound("Beep4.mp3");//afspiller sound
             pointedSpot2DForAA = new Point2D(pointedSpot2D2x,pointedSpot2D2y);
             isBulletAlive = true;
             playerOnlyAttacking = true;
@@ -425,6 +416,9 @@ public class Main extends GameApplication {
     @OnUserAction(name = "QAbility", type = ActionType.ON_ACTION_BEGIN)
     public void hitBeginQ() {
         if(isQAbilityAlive==false&&(playerMANA>=qAbilityCost)){
+            getAudioPlayer().globalSoundVolumeProperty().setValue(0.2); //sætter volume af sounds
+            getAudioPlayer().playSound("Laser_Shoot1.mp3");//afspiller sound
+
             //Da vi gerne vil have q til at spawne inde i player(og billedet er stort med en lille spinner i midten)
             //bliver jeg nødt til at justere dens spawn, samt hvor den skal hen.
             double pointedSpot2D2x = (getInput().getMouseXUI()-25);

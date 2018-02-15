@@ -15,7 +15,7 @@ import javafx.scene.shape.Rectangle;
 public class Legend extends GameApplication {
 
 
-
+/*-DET HER ER EN TEST KLASSE, IGNORE DEN  -*/
     public static void main(String[] args) {
         launch(args);
     }

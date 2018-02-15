@@ -17,7 +17,7 @@ import static captain.the.Main.*;
 public class EnemyControl extends Control {
     private double point2dXRandomGen= (Math.random()*mapsizeX);
     private double point2dYRandomGen= (Math.random()*mapsizeY);
-    private double enemyMovementSpeed = 0.2;
+    private double enemyMovementSpeed = 0.35;
     public int enemySpawnOnY = (int) (Math.random()*mapsizeY);
 
     private int localEnemylifeBaseHP = 50;

@@ -3,6 +3,8 @@ package captain.the;
 import javafx.scene.input.KeyCode;
 
 public class UnusedMethods {
+    /*En klasse der indeholder metoder, der ikke bliver brugt i spillet.*/
+
 
     /*AT GÅ FREM OG TILBAGE*/
     /*-----------------------------------------*/
@@ -159,6 +161,23 @@ public class UnusedMethods {
 
 /*---------------------------------*/
 
+    /*Hvis man klikker på enemy-"Autoattack"*//*
+        enemy.getView().setOnMouseClicked(event -> {
+            if (isBulletAlive == false) {
+                isBulletAlive = true;
+                playerOnlyAttacking = true;
+
+                bullet = Entities.builder()
+                        .type(Types.BULLET)
+                        .at((player.getX() +32), (player.getY())+32)
+                        .viewFromNodeWithBBox(new Rectangle(10, 10, Color.BLUE))
+                        .with(new CollidableComponent(true))
+                        .buildAndAttach(getGameWorld());
+
+            }
+        });*/
+
+    /*--------------------------------------*/
 
 
 }
