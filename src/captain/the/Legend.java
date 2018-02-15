@@ -9,13 +9,14 @@ import com.almasb.fxgl.input.OnUserAction;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.settings.GameSettings;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public class Legend extends GameApplication {
 
-
+/*-----------------------------------------*/
 /*-DET HER ER EN TEST KLASSE, IGNORE DEN  -*/
+/*-----------------------------------------*/
+//Her tester jeg evt. metoder.
+
     public static void main(String[] args) {
         launch(args);
     }

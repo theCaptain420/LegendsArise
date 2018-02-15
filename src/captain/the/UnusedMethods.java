@@ -179,5 +179,63 @@ public class UnusedMethods {
 
     /*--------------------------------------*/
 
+    /*Fortæller en entity at gå mod random spot *//*
+    public void moveON(Entity entity) {
+        if (entity.getPosition() == point2DTilRandomSpot) {
+            point2dXRandomGen = (Math.random() * mapsizeX);
+            point2dYRandomGen = (Math.random() * mapsizeY);
+
+        } else {
+
+            entity.translateTowards(point2DTilRandomSpot, 1);
+
+        }
+    }
+*/
+    /*----------------------------------*/
+
+    /*Factory spawn til bullet*/
+            /*
+
+    @Spawns("bullet")
+    public  Entity newBullet(SpawnData data){
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.DYNAMIC);
+
+        return Entities.builder()
+                .type(Types.BULLET)
+                .from(data)
+                .with(new BulletControls())
+                .build();
+
+        }
+*/
+    /*----------------------------------*/
+
+        /*Hvis man bare klikker på mappet/hvis man vil rykke sig*/
+/*
+        clickedspot = getInput().getMousePositionUI();
+        isPlayerMoving = true;
+        if (isPlayerMoving == true) {
+            cancelPlayerAA = true;
+        }*/
+
+    /*----------------------------------*/
+
+    /*Hvad player skal gøre når han skal rykke sig.*/
+    // -i OnUpdate-
+    //bliver ikke brugt
+        /*
+        if (isPlayerMoving == true && playerOnlyAttacking == false) {
+            //(playerOnlyAttacking==false)Gør at player ikke rykker sig, hvis han angriber.
+            //(isPlayerMoving==true)"spørg" om den skal køre denne funktion.
+            player.translateTowards(clickedspot, movementspeed);
+
+        }*/
+
+    /*----------------------------------*/
+
+
+    /*----------------------------------*/
 
 }
