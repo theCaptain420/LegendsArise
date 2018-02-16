@@ -31,7 +31,6 @@ public class EnemyControl extends Control {
     //Ændre enemyliv, altså hvor meget han mister
     public void setLocalEnemylife(int DMG) {
         this.LocalEnemylife -= DMG;
-        System.out.println("enemy life to :" + this.LocalEnemylife);
     }
 
     //Tillader andre klasser at hente enemy liv

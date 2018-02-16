@@ -224,21 +224,32 @@ public class Main extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.ENEMY, Types.BULLET) {
             @Override
             protected void onCollisionBegin(Entity enemy, Entity coin) {
+                //Fjerne bullet fra world
                 bullet.removeFromWorld();
+
+                //Ændrer enemies liv
                 enemyControl.setLocalEnemylife(playerDMG);
+
+                //Checker om enemies liv er under/lig 0
+                //Hvis den er, fjerner den enemy og giver point, samt mana.
                 if (enemyControl.getLocalEnemylife() <= 0) {
+                    //enemy
                     enemy.removeFromWorld();
-                    enemyControl.resetLocalEnemyLife();
+                    enemyControl.resetLocalEnemyLife();//Gendanner enemy liv
+
+                    //Tilføjer point og mana
                     getGameState().increment("enemiesslain", +1);
                     getGameState().increment("playerLifeIntMan", +1);//får mana for hver enemyslain
                     enemiesSlainCounter++;
                     playerMANA += 1;
+
+                    //Afspiller lyd, når den dør.
                     getAudioPlayer().globalSoundVolumeProperty().setValue(0.2); //sætter volume af sounds
                     getAudioPlayer().playSound("Beep2.mp3");//afspiller sound
 
 
                 }
-
+                //fortæller programmet at bullet ikke længere er i live.
                 isBulletAlive = false;
             }
         });
@@ -247,13 +258,19 @@ public class Main extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.ENEMY, Types.QAbility) {
             @Override
             protected void onCollisionBegin(Entity enemy, Entity QAbilty) {
+                //enemy
                 enemy.removeFromWorld();
+
+                //Tilføjer point og mana
                 getGameState().increment("enemiesslain", +1);
                 getGameState().increment("playerLifeIntMan", +2);//får mana for hver enemyslain
                 playerMANA += 2;
                 enemiesSlainCounter++;
+
+                //Afspiller lyd
                 getAudioPlayer().globalSoundVolumeProperty().setValue(0.2); //sætter volume af sounds
                 getAudioPlayer().playSound("Beep2.mp3");//afspiller sound
+
                 /*Det er er ikke nødvendigt, da jeg gerne vil have at qability OneShotter enemies*/
                 /*enemyControl.setLocalEnemylife(qAbilityDMG);
                 if(enemyControl.getLocalEnemylife()<=0){
@@ -269,9 +286,14 @@ public class Main extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(Types.WALL, Types.ENEMY) {
             @Override
             protected void onCollisionBegin(Entity wallEntity, Entity enemy) {
+                //enemy
                 enemy.setViewFromTexture("pixelExplosion.gif");//viser explosion gif når wall bliver ramt
+
+                //Afspiller en lyd når den dør
                 getAudioPlayer().globalSoundVolumeProperty().setValue(0.2); //sætter volume af sounds
                 getAudioPlayer().playSound("Explosion6.mp3");//afspiller sound
+
+                //Ændre væggens liv
                 wallHP -= 50;//får wall til at miste liv
                 getGameState().increment("LifeWall", -50); //får wall til at miste liv
 
@@ -310,6 +332,12 @@ public class Main extends GameApplication {
 
     @Override
     protected void initUI() {
+        /*
+        * Alt herunder har noget at gøre med opsætningen af UI.
+        * Det er ikke andet end position, og at gøre den aktiv.(Så den kan ændres og ses.)
+        *
+        * */
+
         //PlayerHP
         Text textPixelsNumbers = new Text();
         textPixelsNumbers.setTranslateX((mapsizeX / 2) + 10);//UI på X
@@ -335,6 +363,9 @@ public class Main extends GameApplication {
 
         Text textPixelsNumbers4 = new Text();
         textPixelsNumbers4.textProperty().bind(getGameState().intProperty("enemiesslain").asString());//Printer pixelsMoved
+
+        //En metode der bliver brugt til at ændre værdierne på UI.
+        //Bliver brugt rundt omkring i spillet.
         //getGameState().increment("playerLifeIntMan", +1);
 
 
@@ -342,6 +373,7 @@ public class Main extends GameApplication {
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
+        //Putter UI ind i spillet, så det kan ses og ændres.
         vars.put("playerLifeIntMan", playerMANA);
         vars.put("LifeWall", wallHP);
         vars.put("playerLifeInt", playerLife);
@@ -353,16 +385,24 @@ public class Main extends GameApplication {
     @OnUserAction(name = "AutoAttack", type = ActionType.ON_ACTION_BEGIN)
     public void hitBeginAA() {
 
+        //Musens position / hvor skudet skal flyve hen.
         double pointedSpot2D2x = (getInput().getMouseXUI());
         double pointedSpot2D2y = (getInput().getMouseYUI());
-        //pointedSpot2D = new Point2D(pointedSpot2D2x,pointedSpot2D2y);
+
+        //Hvis der ikke er et aktivt skud på banen, skal den køre dette.
+        //Basically bare et skud der flyver hen mod musens position.
         if (isBulletAlive == false) {
+            //Lyd
             getAudioPlayer().globalSoundVolumeProperty().setValue(0.2); //sætter volume af sounds
             getAudioPlayer().playSound("Beep4.mp3");//afspiller sound
-            pointedSpot2DForAA = new Point2D(pointedSpot2D2x, pointedSpot2D2y);
-            isBulletAlive = true;
-            playerOnlyAttacking = true;
 
+            //Musens position
+            pointedSpot2DForAA = new Point2D(pointedSpot2D2x, pointedSpot2D2y);
+
+            //Ændre skud til at være aktiv, så man kun at have et skud af gangen.
+            isBulletAlive = true;
+
+            //laver en bullet.
             bullet = Entities.builder()
                     .type(Types.BULLET)
                     .at((player.getX() + 32), (player.getY()) + 32)
@@ -373,19 +413,17 @@ public class Main extends GameApplication {
 
     }
 
-    @OnUserAction(name = "AutoAttack", type = ActionType.ON_ACTION_END)
-    public void hitEndAA() {
-        //bullet.removeFromWorld();
-        //playerOnlyAttacking = false;//gør den tilbage til false, så han kan rykke sig igen bagefter.
 
-    }
 
     /*Q ability*/
-    int qAbilityCost = 20;//hvor meget abilitien koster at bruge
+    //Hvor meget abilitien koster at bruge
+    int qAbilityCost = 20;
 
+    /*Når man klikker q, kommer den en ability ud, dette er metoden*/
     @OnUserAction(name = "QAbility", type = ActionType.ON_ACTION_BEGIN)
     public void hitBeginQ() {
         if (isQAbilityAlive == false && (playerMANA >= qAbilityCost)) {
+            //lyd
             getAudioPlayer().globalSoundVolumeProperty().setValue(0.2); //sætter volume af sounds
             getAudioPlayer().playSound("Laser_Shoot1.mp3");//afspiller sound
 
@@ -394,20 +432,22 @@ public class Main extends GameApplication {
             double pointedSpot2D2x = (getInput().getMouseXUI() - 25);
             double pointedSpot2D2y = (getInput().getMouseYUI() - 25);
             pointedSpot2DForAbility = new Point2D(pointedSpot2D2x, pointedSpot2D2y);
+
             //pointedSpot2D = getInput().getMousePositionUI();
             mousePosEntity = Entities.builder().type(Types.MOUSEPOS).at(pointedSpot2DForAbility).with(new CollidableComponent()).buildAndAttach(getGameWorld());
 
-
+            //Sætter til at være aktiv, bliver brugt så kun 1 q kan være aktiv af gangen.
             isQAbilityAlive = true;
-            qAbilityEntity = Entities.builder()
 
+            //Q builder(bygger q)
+            qAbilityEntity = Entities.builder()
                     .type(Types.QAbility)
                     .at((player.getX()), (player.getY()))
                     .viewFromTextureWithBBox("qAbility.gif")
-                    //.bbox(new HitBox(BoundingShape.circle(32)))
                     .with(new CollidableComponent(true))
                     .buildAndAttach(getGameWorld());
 
+            //Ændrer mana
             getGameState().increment("playerLifeIntMan", -qAbilityCost);
             playerMANA -= qAbilityCost;
         }
@@ -416,24 +456,32 @@ public class Main extends GameApplication {
 
     @Override
     protected void initSettings(GameSettings settings) {
+        //Bestemmer størrelse af window
         settings.setWidth(mapsizeX);
         settings.setHeight(mapsizeY);
+
+        //titlen
         settings.setTitle("Legends Arise Alpha");
-        settings.setFullScreenAllowed(true);
+        settings.setVersion("0.5.4");
+
+        //Om man må gøre det full screen
+        settings.setFullScreenAllowed(false);
+
+        //andet
         //settings.setMenuEnabled(true); //Viser menuen.
         settings.setIntroEnabled(false); //Fjerner introen
-        settings.setVersion("0.5.3");
     }
 
     @Override
     protected void preInit() {
+        //Baggrund musik
         getAudioPlayer().playMusic("fireAuraBackgroundMusic.mp3");
 
     }
 
+    //Det der kører hele skidtet
     public static void main(String args[]) {
         System.out.println("hello world!");
         launch(args);
     }
 }
-//                getGameState().increment("pixelsMoved", +1);
