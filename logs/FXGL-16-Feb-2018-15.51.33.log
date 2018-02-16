@@ -1,0 +1,285 @@
+15:50:27.650 [JavaFX Application Thread] DEBUG GameApplication      - Logger initialized
+15:50:27.681 [JavaFX Application Thread] DEBUG MainWindow           - Creating a JavaFX scene
+15:50:27.924 [JavaFX Application Thread] DEBUG MainWindow           - Target settings size: 1230.0 x 487.0
+15:50:27.924 [JavaFX Application Thread] DEBUG MainWindow           - Scaled scene size:    1230.0 x 487.0
+15:50:27.925 [JavaFX Application Thread] DEBUG MainWindow           - Scaled ratio: (1.0, 1.0)
+15:50:28.354 [JavaFX Application Thread] DEBUG GameApplication      - Starting FXGL
+15:50:28.502 [FXGL Launcher Thread     ] INFO  Version              - FXGL-0.4.2
+15:50:28.503 [FXGL Launcher Thread     ] INFO  Version              - Source code and latest versions at: https://github.com/AlmasB/FXGL
+15:50:28.503 [FXGL Launcher Thread     ] INFO  Version              -              Join the FXGL chat at: https://gitter.im/AlmasB/FXGL
+15:50:28.504 [FXGL Launcher Thread     ] DEBUG FXGL                 - Loading FXGL system data
+15:50:28.523 [FXGL Launcher Thread     ] DEBUG IOTask               - Executing task: readDataTask(system/fxgl.bundle)
+15:50:28.569 [FXGL Launcher Thread     ] DEBUG FS                   - Reading from: system/fxgl.bundle
+15:50:28.627 [FXGL Launcher Thread     ] DEBUG IOTask               - Task succeeded: readDataTask(system/fxgl.bundle)
+15:50:28.628 [FXGL Launcher Thread     ] DEBUG Bundle               - Logging bundle: FXGL
+15:50:28.629 [FXGL Launcher Thread     ] DEBUG Bundle               - FXGL.offline.timer.version.check=2018-02-09T12:39:56.470
+15:50:28.800 [JavaFX Application Thread] DEBUG UpdaterTask          - Checking for updates
+15:50:29.096 [JavaFX Application Thread] DEBUG IOTask               - Showing dialog
+15:50:29.098 [FXGL Background Thread 1 ] DEBUG IOTask               - Executing task: openStream(https://raw.githubusercontent.com/AlmasB/FXGL/master/pom.xml)
+15:50:29.098 [FXGL Background Thread 1 ] DEBUG IOTask               - Executing task: openStream(https://raw.githubusercontent.com/AlmasB/FXGL/master/pom.xml)
+15:50:30.635 [FXGL Background Thread 1 ] DEBUG IOTask               - Executing task: latestVersion
+15:50:30.691 [JavaFX Application Thread] DEBUG IOTask               - succeed(): Dismissing dialog
+15:50:30.693 [JavaFX Application Thread] DEBUG IOTask               - Task succeeded: openStream(https://raw.githubusercontent.com/AlmasB/FXGL/master/pom.xml)
+15:50:30.704 [FXGL Launcher Thread     ] DEBUG GameApplication      - FXGL started
+15:50:30.704 [FXGL Launcher Thread     ] DEBUG GameApplication      - Logging game settings
+Title: Legends Arise Alpha
+Version: 0.5.4
+Width: 1230
+Height: 487
+Fullscreen: true
+Intro: false
+Menus: false
+Profiling: false
+Single step:false
+App Mode: DEVELOPER
+Menu Key: ESCAPE
+Stage Style: DECORATED
+Scene Factory: class com.almasb.fxgl.scene.SceneFactory
+Dialog Factory: class com.almasb.fxgl.ui.FXGLDialogFactory
+UI Factory: class com.almasb.fxgl.ui.FXGLUIFactory
+Notification Service: class com.almasb.fxgl.gameplay.notification.XboxNotificationView
+Exception Handler: class com.almasb.fxgl.app.FXGLExceptionHandler
+15:50:30.705 [FXGL Launcher Thread     ] DEBUG GameApplication      - Configuring GameApplication
+15:50:30.705 [FXGL Launcher Thread     ] DEBUG GameApplication      - Initializing state machine and application states
+15:50:30.783 [FXGL Launcher Thread     ] DEBUG AssetLoader          - Loading from disk: /assets/ui/cursors/fxgl_default.png
+15:50:30.854 [FXGL Launcher Thread     ] DEBUG AssetLoader          - Loading from disk: /assets/ui/cursors/fxgl_default.png
+15:50:30.858 [FXGL Launcher Thread     ] DEBUG AssetLoader          - Loading from disk: /assets/ui/cursors/fxgl_default.png
+15:50:30.891 [FXGL Launcher Thread     ] DEBUG AssetLoader          - Loading from disk: /assets/sounds/core/notification.wav
+15:50:31.017 [FXGL Launcher Thread     ] DEBUG AssetLoader          - Loading from disk: /assets/sounds/menu/select.wav
+15:50:31.020 [FXGL Launcher Thread     ] DEBUG AssetLoader          - Loading from disk: /assets/sounds/menu/back.wav
+15:50:31.023 [FXGL Launcher Thread     ] DEBUG AssetLoader          - Loading from disk: /assets/sounds/menu/press.wav
+15:50:31.026 [FXGL Launcher Thread     ] DEBUG AssetLoader          - Loading from disk: /assets/ui/fonts/VarelaRound-Regular.ttf
+15:50:31.037 [FXGL Launcher Thread     ] DEBUG AssetLoader          - Loading from disk: /assets/ui/fonts/lucida_console.ttf
+15:50:31.044 [FXGL Launcher Thread     ] DEBUG AssetLoader          - Loading from disk: /assets/ui/css/fxgl_dark.css
+15:50:31.044 [FXGL Launcher Thread     ] DEBUG AssetLoader          - Loading from disk: /assets/ui/icons/fxgl_icon.png
+15:50:31.085 [FXGL Launcher Thread     ] DEBUG AssetLoader          - Loading from disk: /assets/ui/cursors/fxgl_default.png
+15:50:31.159 [FXGL Launcher Thread     ] DEBUG FXGL.GameScene       - Game scene initialized: 1230x487
+15:50:31.165 [FXGL Launcher Thread     ] DEBUG FXGL.GameWorld       - Game world initialized
+15:50:31.249 [FXGL Launcher Thread     ] DEBUG FXGL.PhysicsWorld    - Physics world initialized: appHeight=487, physics.ppm=50.0
+15:50:31.277 [FXGL Launcher Thread     ] DEBUG Input                - Registered new binding: Pause - Esc
+15:50:31.385 [FXGL Launcher Thread     ] INFO  GameApplication      - Game configuration took:  0.679 sec
+15:50:31.387 [JavaFX Application Thread] DEBUG MainWindow           - Opening main window
+15:50:31.438 [JavaFX Application Thread] DEBUG MainWindow           - Window border size: (0.0, 0.0)
+15:50:31.438 [JavaFX Application Thread] DEBUG MainWindow           - Scaled size: 1230.0 x 487.0
+15:50:31.438 [JavaFX Application Thread] DEBUG MainWindow           - Scaled ratio: (1.0, 1.0)
+15:50:31.439 [JavaFX Application Thread] DEBUG MainWindow           - Scene size: 1230.0 x 487.0
+15:50:31.439 [JavaFX Application Thread] DEBUG MainWindow           - Stage size: 1230.0 x 487.0
+15:50:31.439 [JavaFX Application Thread] DEBUG GameApplication      - Running preInit()
+15:50:31.443 [JavaFX Application Thread] DEBUG AnnotationParser     - Main app package name: captain.the
+15:50:31.657 [JavaFX Application Thread] DEBUG AnnotationParser     - @SetAchievementStore: []
+15:50:31.658 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Screenshot - P
+15:50:31.659 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Dev Options - CTRL+0
+15:50:31.660 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Restart - CTRL+R
+15:50:31.660 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Move Right - D
+15:50:31.660 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Move Left - A
+15:50:31.660 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Move Up - W
+15:50:31.661 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Move Down - S
+15:50:31.663 [JavaFX Application Thread] DEBUG Input                - Registered new binding: QAbility - Q
+15:50:31.664 [JavaFX Application Thread] DEBUG Input                - Registered new binding: AutoAttack - LMB
+15:50:31.687 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/music/fireAuraBackgroundMusic.mp3
+15:50:32.216 [JavaFX Application Thread] DEBUG AudioPlayer          - Playing music Music [balance=0.0, volume=1.0, rate=1.0, cycleCount=1]
+15:50:32.294 [JavaFX Application Thread] DEBUG GameApplication      - Starting main loop
+15:50:32.302 [JavaFX Application Thread] DEBUG StartupState         - STARTUP
+15:50:32.303 [JavaFX Application Thread] DEBUG GameApplication      - Starting new game
+15:50:32.303 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+15:50:32.341 [JavaFX Application Thread] DEBUG AppStateMachine      - StartupState -> LoadingState
+15:50:32.342 [JavaFX Application Thread] DEBUG AnnotationParser     - Main app package name: captain.the
+15:50:32.343 [JavaFX Application Thread] DEBUG InitAppTask          - Parsing annotations
+15:50:32.373 [JavaFX Application Thread] DEBUG AnnotationParser     - @SetEntityFactory: [Factory]
+15:50:32.373 [JavaFX Application Thread] DEBUG AnnotationParser     - @SetEventHandler: []
+15:50:32.373 [JavaFX Application Thread] DEBUG AnnotationParser     - @AddCollisionHandler: []
+15:50:32.378 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Clearing previous game
+15:50:32.378 [FXGL Background Thread 1 ] DEBUG FXGL.GameWorld       - Clearing game world
+15:50:32.379 [FXGL Background Thread 1 ] DEBUG FXGL.PhysicsWorld    - Clearing physics world
+15:50:32.379 [FXGL Background Thread 1 ] DEBUG FXGL.GameScene       - Clearing game scene
+15:50:32.380 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Initializing Assets
+15:50:32.393 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Initializing Game
+15:50:32.489 [FXGL Background Thread 1 ] DEBUG AssetLoader          - Loading from disk: /assets/textures/HPMANAHP.png
+15:50:32.526 [FXGL Background Thread 1 ] DEBUG FXGL.GameScene       - Creating render group for layer: TOP(2147483647)
+15:50:32.538 [FXGL Background Thread 1 ] DEBUG AssetLoader          - Loading from disk: /assets/textures/8bitcircle.png
+15:50:32.540 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Initializing Physics
+15:50:32.541 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Initializing UI
+15:50:32.561 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Initialization Complete
+15:50:32.561 [FXGL Background Thread 1 ] INFO  InitAppTask          - Game initialization took: 0.183 sec
+15:50:32.570 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+15:50:32.579 [JavaFX Application Thread] DEBUG AppStateMachine      - LoadingState -> PlayState
+15:50:33.370 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/sounds/Beep4.mp3
+15:50:36.991 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:37.990 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:38.343 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:38.686 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:39.023 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:39.430 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:39.631 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/sounds/Beep2.mp3
+15:50:39.775 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:41.295 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:41.639 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:42.031 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:42.215 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:42.382 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:42.495 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:50:42.542 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:43.894 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:44.264 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:44.607 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:44.951 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:45.111 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:45.262 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:45.409 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:50:45.438 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:46.697 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/sounds/Laser_Shoot1.mp3
+15:50:46.710 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/textures/qAbility.gif
+15:50:47.043 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:50:48.258 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:50:48.495 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:48.702 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:48.863 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:49.039 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:49.200 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:49.271 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:50:49.366 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:51.342 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:51.694 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:51.854 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:52.023 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:52.177 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:52.334 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:52.435 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:50:52.486 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:53.471 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:53.790 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:54.102 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:54.262 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:54.414 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:54.536 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:50:54.567 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:54.718 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:55.598 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:55.942 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:56.286 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:56.455 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:56.615 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:56.766 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:56.888 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:50:56.910 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:57.823 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:58.158 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:58.326 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:58.510 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:58.681 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:50:58.784 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:50:58.839 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:00.454 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:00.855 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:01.191 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:01.358 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:01.678 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:01.999 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:02.167 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:02.392 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:51:02.471 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:03.712 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Laser_Shoot1.mp3
+15:51:03.714 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/qAbility.gif
+15:51:03.931 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:51:04.418 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:51:04.889 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:51:06.343 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:06.718 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:06.902 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:07.080 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:07.238 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:07.398 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:07.509 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:51:07.678 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:08.366 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:08.678 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:09.015 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:09.190 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:09.335 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:09.479 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:09.607 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:51:09.654 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:10.607 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:10.942 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:11.118 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:11.279 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:11.438 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:11.529 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:51:11.599 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:11.750 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:12.431 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:12.790 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:12.958 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:13.134 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:13.286 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:13.454 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:13.561 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:51:13.615 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:14.342 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:14.727 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:15.238 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:15.406 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:15.742 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:16.087 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:16.262 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:51:16.430 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:17.630 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:18.022 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:18.366 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:18.535 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:18.694 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:18.862 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:18.977 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:51:19.022 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:20.031 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:20.702 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:21.118 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/textures/pixelExplosion.gif
+15:51:21.146 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/sounds/Explosion6.mp3
+15:51:21.574 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:21.938 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Laser_Shoot1.mp3
+15:51:21.939 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/qAbility.gif
+15:51:22.054 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:51:22.295 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:23.215 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:23.559 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:24.102 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:24.655 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/pixelExplosion.gif
+15:51:24.656 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Explosion6.mp3
+15:51:24.830 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:25.494 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:25.679 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:25.846 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:26.022 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:26.126 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:51:26.190 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:26.742 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:27.478 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:27.717 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Laser_Shoot1.mp3
+15:51:27.718 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/qAbility.gif
+15:51:27.816 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/pixelExplosion.gif
+15:51:27.816 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Explosion6.mp3
+15:51:28.303 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:28.745 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:51:29.071 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:29.650 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Laser_Shoot1.mp3
+15:51:29.655 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/qAbility.gif
+15:51:29.713 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:51:29.790 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:29.995 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep2.mp3
+15:51:30.383 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/sounds/Beep4.mp3
+15:51:30.447 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/properties/languages/english.properties
+15:51:30.448 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/properties/languages/english.properties
+15:51:30.450 [JavaFX Application Thread] DEBUG AppStateMachine      - Push state: DialogSubState
+15:51:30.450 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+15:51:30.450 [JavaFX Application Thread] DEBUG AppStateMachine      - PlayState -> DialogSubState
+15:51:33.550 [JavaFX Application Thread] DEBUG AppStateMachine      - Pop state: DialogSubState
+15:51:33.550 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+15:51:33.552 [JavaFX Application Thread] DEBUG AppStateMachine      - PlayState <- DialogSubState
+15:51:33.552 [JavaFX Application Thread] DEBUG GameApplication      - Exiting game application
+15:51:33.555 [JavaFX Application Thread] DEBUG GameApplication      - Shutting down background threads
+15:51:33.555 [JavaFX Application Thread] DEBUG GameApplication      - Exiting FXGL
+15:51:33.555 [JavaFX Application Thread] DEBUG FXGL                 - Saving FXGL system data
+15:51:33.556 [JavaFX Application Thread] DEBUG IOTask               - Executing task: writeDataTask(system/fxgl.bundle)
+15:51:33.557 [JavaFX Application Thread] DEBUG FS                   - Writing to: system/fxgl.bundle
+15:51:33.561 [JavaFX Application Thread] DEBUG IOTask               - Task succeeded: writeDataTask(system/fxgl.bundle)
+15:51:33.561 [JavaFX Application Thread] DEBUG GameApplication      - Closing logger and exiting JavaFX
